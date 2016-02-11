@@ -1,5 +1,5 @@
 
-module.exports = function(lobby) {
+module.exports = function(lobby, io) {
     var lobby = lobby;
 
     var players = [];
@@ -10,7 +10,11 @@ module.exports = function(lobby) {
 
             player.getSocket().on(MessageTypes.CHAT_MESSAGE, function(message){
                 console.log('message from user ' + player.getName() + ': ' + message);
-                player.getSocket().emit(MessageTypes.CHAT_MESSAGE, 'User ' + player.getName() + ': ' + message);
+
+                var clientMessage = 'User ' + player.getName() + ': ' + message;
+
+                player.getSocket().emit(MessageTypes.CHAT_MESSAGE, clientMessage);
+                player.getSocket().broadcast.emit(MessageTypes.CHAT_MESSAGE, clientMessage);
             });
         },
         removePlayer: function (player) {

@@ -12,7 +12,7 @@ var Player = require('../shared/player.js');
 
 
 var lobby = require('../shared/lobby.js')();
-var chat = require('./chat.js')(lobby, MessageTypes);
+var chat = require('./chat.js')(lobby, MessageTypes, io);
 
 app.get('/', function (request, response) {
     fs.readFile(__dirname + '/index.html', function (err, data) {

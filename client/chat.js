@@ -11,13 +11,19 @@ var Chat = function(chatFormId, chatInputId, socket) {
     var lastMessages = [];
 
     chatBoxForm.onsubmit = function() {
-        socket.emit(MessageTypes.CHAT_MESSAGE, chatInputField.value);
+        var message = chatInputField.value;
+
+        socket.emit(MessageTypes.CHAT_MESSAGE, message);
         chatInputField.value = '';
         return false;
     };
     socket.on(MessageTypes.CHAT_MESSAGE, function (message) {
-        lastMessages.push({'message': message, 'timestamp': Date.now()});
+        pushMessage(message);
     });
+
+    var pushMessage = function (message) {
+        lastMessages.push({'message': message, 'timestamp': Date.now()});
+    };
 
     that.draw = function (gfx) {
         var currentTime = Date.now();
