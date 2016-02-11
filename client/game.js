@@ -141,6 +141,7 @@ transport.setOwner(player);
 
 var chat = new Chat('chatBox', 'messageField', socket);
 
+var lobby = new Lobby();
 
 var lastFrameTimeMs = 0,
     maxFPS = 60,
@@ -149,6 +150,21 @@ var lastFrameTimeMs = 0,
 
 // register objects for events
 engine.registerListener('click', transport.click);
+
+socket.emit('test', 'some message');
+
+socket.on(MessageTypes.USER_CONNECTED, function () {
+    var player = new Player(socket);
+    lobby.addPlayer(player);
+
+    console.log('player connected. current players count: ' + lobby.getPlayers().length);
+});
+
+socket.on(MessageTypes.USER_DISCONNECTED, function(playerIndex) {
+    lobby.removePlayerAt(playerIndex);
+
+    console.log('player disconnected. current players count: ' + lobby.getPlayers().length);
+});
 
 // draw something ...
 function gameLoop(timestamp) {

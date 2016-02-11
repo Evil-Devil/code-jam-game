@@ -14,6 +14,10 @@ var Lobby = function() {
             throw 'player already added';
         }
 
+        for (var i = 0; i < players.length; i++) {
+            player.getSocket().emit(MessageTypes.USER_CONNECTED, i);
+        }
+
         players.push(player);
         readyPlayers.push(false);
 
@@ -23,10 +27,18 @@ var Lobby = function() {
     that.removePlayer = function(player) {
         var playerIndex = players.indexOf(player);
         if (playerIndex != -1) {
-            players.splice(playerIndex, 1);
-            readyPlayers.splice(playerIndex, 1);
+            that.removePlayerAt(playerIndex);
         }
-    }
+    };
+
+    that.removePlayerAt = function(playerIndex) {
+        players.splice(playerIndex, 1);
+        readyPlayers.splice(playerIndex, 1);
+
+        for (var i = 0; i < players.length; i++) {
+            players[i].getSocket().emit(MessageTypes.USER_DISCONNECTED, playerIndex);
+        }
+    };
 
     that.setPlayerReadyStatus = function(player, status) {
         var playerIndex = readyPlayers.indexOf(player);
