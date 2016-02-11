@@ -10,10 +10,16 @@ body {
     height: 100%;
 }
 
+div#background {
+    width: 1024px;
+    height: 600px;
+    border: 1px solid #000;
+    margin: 10px auto 0;
+    background:  url("world_draf_kleiner.jpg") no-repeat;
+}
+
 #gameCanvas {
-    border: 1px solid #FF0000;
-    margin: 10px 0 0 150px;
-    background: url("world_draf1_1024.jpg") no-repeat;
+    background: url("world_kleiner_2_layer.png") no-repeat;
 }
 
 #chatBox {

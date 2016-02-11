@@ -132,6 +132,7 @@ transport.setPosition(600, 100);
 var chat = new Chat('chatBox', 'messageField');
 
 
+
 var lastFrameTimeMs = 0,
     maxFPS = 60,
     delta = 0,
@@ -141,7 +142,7 @@ var lastFrameTimeMs = 0,
 engine.registerListener('click', transport.click);
 
 var socket = io();
-socket.emit('test', 'some message');
+
 
 // draw something ...
 function gameLoop(timestamp) {
