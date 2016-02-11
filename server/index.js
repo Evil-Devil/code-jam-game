@@ -1,11 +1,12 @@
-var http = require('http');
+var app = require('express')();
+var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mime = require('mime-types');
 var url = require('url');
 var fs = require('fs');
 
 //processing html
-http.createServer(function(request, response) {
+/*http.createServer(function(request, response) {
     var pathname = url.parse(request.url, true).pathname;
 
     if (pathname == '/') {
@@ -36,6 +37,34 @@ http.createServer(function(request, response) {
         response.end();
     }
 }).listen(3000, function(){
+    console.log('listening on *:3000');
+});*/
+app.get('/', function (request, response) {
+    fs.readFile(__dirname + '/index.html', function (err, data) {
+        response.writeHeader(200, {"Content-Type": "text/html"});
+        response.write(data);
+        response.end();
+    });
+});
+
+var outputFile = function (request, response) {
+    var pathname = url.parse(request.url, true).pathname;
+    fs.readFile(__dirname + '/..' + pathname, function (err, data) {
+        if (err == undefined) {
+            response.writeHeader(200, {"Content-Type": mime.lookup(pathname)});
+            response.write(data);
+            response.end();
+        } else {
+            response.writeHeader(404);
+            response.end();
+        }
+    });
+};
+
+app.get('/client/*', outputFile);
+app.get('/shared/*', outputFile);
+
+http.listen(3000, function(){
     console.log('listening on *:3000');
 });
 
