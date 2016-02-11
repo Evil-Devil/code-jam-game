@@ -45,7 +45,12 @@ engine.init();
 var ctx = engine.getContext();
 var gfx = new Gfx(ctx);
 
+var socket = io();
+
 var market = new Marketplace();
+var chat = new Chat('chatBox', 'messageField', socket, function(message) {
+    gfx.write(0, 0, '#000000', message);
+});
 
 
 // draw something ...
