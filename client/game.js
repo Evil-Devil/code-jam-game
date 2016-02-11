@@ -76,7 +76,7 @@ var Workshop = function (x, y) {
     that.draw = function (gfx) {
         gfx.fontSize('32px');
         gfx.drawCircle(position.x, position.y, 25, '#FFFF00');
-        gfx.write(position.x - 16, position.y + 11, '#FFF', "W");
+        gfx.write(position.x - 16, position.y + 11, '#FFF', "T");
     };
 
     return that;
