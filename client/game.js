@@ -120,7 +120,7 @@ var mouse = engine.getMouse();
 var socket = io();
 
 var player = new Player(socket);
-player.setName("TestUser");
+player.setName("TestUser" + Math.random().toString(36).substring(2, 5));
 
 var market = new Marketplace();
 
