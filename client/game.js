@@ -117,7 +117,7 @@ var ctx = engine.getContext();
 var gfx = new Gfx(ctx);
 var mouse = engine.getMouse();
 
-var player = new Player();
+var player = new Player(io());
 player.setName("TestUser");
 
 var market = new Marketplace();
