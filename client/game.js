@@ -83,7 +83,7 @@ var Transport = function () {
     that.draw = function (gfx) {
         gfx.fontSize('21px');
         gfx.drawCircle(position.x, position.y, 15, '#0000FF');
-        gfx.write(position.x - 10.5, position.y + 9, '#FFF', "W");
+        gfx.write(position.x - 10.5, position.y + 9, '#FFF', "T");
     };
 
     return that;
@@ -101,7 +101,7 @@ var Workshop = function (x, y) {
     that.draw = function (gfx) {
         gfx.fontSize('32px');
         gfx.drawCircle(position.x, position.y, 25, '#FFFF00');
-        gfx.write(position.x - 16, position.y + 11, '#FFF', "T");
+        gfx.write(position.x - 16, position.y + 11, '#FFF', "W");
     };
 
     return that;
@@ -139,6 +139,9 @@ var lastFrameTimeMs = 0,
 
 // register objects for events
 engine.registerListener('click', transport.click);
+
+var socket = io();
+socket.emit('test', 'some message');
 
 // draw something ...
 function gameLoop(timestamp) {

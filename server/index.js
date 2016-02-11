@@ -4,6 +4,7 @@ var io = require('socket.io')(http);
 var mime = require('mime-types');
 var url = require('url');
 var fs = require('fs');
+var game = require('./game.js')(io);
 
 app.get('/', function (request, response) {
     fs.readFile(__dirname + '/index.html', function (err, data) {
