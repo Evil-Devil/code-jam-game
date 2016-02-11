@@ -1,10 +1,10 @@
-var Chat = function(chatFormId, chatInputId) {
+var Chat = function(chatFormId, chatInputId, socket) {
 
     var that = {};
 
     var fadeOutDuration = 5000;
 
-    var socket = io();
+    var socket = socket;
     var chatBoxForm = document.getElementById(chatFormId);
     var chatInputField = document.getElementById(chatInputId);
 

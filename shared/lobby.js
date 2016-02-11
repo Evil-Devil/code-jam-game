@@ -16,6 +16,8 @@ var Lobby = function() {
 
         players.push(player);
         readyPlayers.push(false);
+
+        console.log('new player count ' + players.length);
     };
 
     that.removePlayer = function(player) {
