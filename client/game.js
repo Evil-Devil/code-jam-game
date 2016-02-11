@@ -140,8 +140,9 @@ transport.setPosition(500,500);
 transport.setOwner(player);
 
 var chat = new Chat('chatBox', 'messageField', socket);
-
 var lobby = new Lobby();
+
+var hud = new HUD(chat);
 
 var lastFrameTimeMs = 0,
     maxFPS = 60,
@@ -200,7 +201,7 @@ function drawGraphics() {
     workshop.draw(gfx);
     transport.draw(gfx);
     chat.draw(gfx);
-    drawHUD(gfx);
+    hud.draw(gfx);
 }
 
 function drawHUD(gfx) {
@@ -208,11 +209,13 @@ function drawHUD(gfx) {
     gfx.fontSize('24px');
     gfx.write(100, 50, '#00FF00', outText);
 
-    //var players = lobby.getPlayers();
-    //var startY = 50;
-    //for (p in players) {
-    //    outText = "" + p.getName() + " | Money: " + p.getMoney();
-    //    gfx.write(400, startY, '#ff0000', outText);
-    //}
+    var players = lobby.getPlayers();
+    //console.log(players.length);
+    var startY = 50;
+    for (p in players) {
+        outText = "" + players[p].getName() + " | Money: " + players[p].getMoney();
+        gfx.write(400, startY, '#ff0000', outText);
+        startY += 25;
+    }
 
 }
