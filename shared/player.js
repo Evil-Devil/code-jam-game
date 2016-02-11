@@ -22,3 +22,4 @@ var Player = function() {
 
     return that;
 };
+module.exports = Player;

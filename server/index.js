@@ -1,3 +1,4 @@
+require('node-import');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -5,6 +6,7 @@ var mime = require('mime-types');
 var url = require('url');
 var fs = require('fs');
 var game = require('./game.js')(io);
+var player = require('./../shared/player.js');
 
 app.get('/', function (request, response) {
     fs.readFile(__dirname + '/index.html', function (err, data) {
@@ -38,6 +40,7 @@ http.listen(3000, function(){
 //processing websockets
 var userNumber = 0;
 io.on('connection', function(socket){
+    game.registerPlayer(new player());
     console.log('user ' + userNumber + ' connected');
     (function (userNumber) {
         io.emit('user connected', 'User ' + userNumber + ' connected');

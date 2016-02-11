@@ -7,9 +7,12 @@ module.exports.states = {
 
 module.exports = function(io) {
     var that = this;
-    var registerPlayer = function(player) {
-        console.log(player);
-    }
+
+    return {
+        registerPlayer: function(player) {
+            console.log(player);
+        }
+    };
 };
 
 
