@@ -7,5 +7,9 @@ var Player = function() {
         return name;
     };
 
+    that.setName = function(setName) {
+        name = setName;
+    };
+
     return that;
 };
