@@ -1,2 +1,2 @@
 all:
-	npm install
+	npm install server

@@ -7,8 +7,15 @@
 </head>
 <body>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <form id="chatBox" action="">
+        <input id="messageField" autocomplete="off" />
+        <button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="engine.js"></script>
     <script type="text/javascript" src="gfx.js"></script>
+    <script type="text/javascript" src="chat.js"></script>
     <script type="text/javascript" src="game.js"></script>
 </body>
 </html>
