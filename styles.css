@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+#gameCanvas {
+    border: 1px solid #FF0000;
+    margin: 50px 0 0 150px;
+    background: #EFEFEF;
+}

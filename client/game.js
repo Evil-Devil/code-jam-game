@@ -12,8 +12,15 @@ var Good = function(name) {
 
 var Marketplace = function() {
     var that = {};
+    var position = new Position();
 
-    that.buy = function() {
+    that.setPosition = function(x, y) {
+        //position.x = x;
+        //position.y = y;
+        position = new Position(x,y);
+    }
+
+    that.buy = function () {
         console.log("you bought goods");
     };
 
@@ -30,11 +37,46 @@ var Marketplace = function() {
     return that;
 }
 
-var Workshop = function() {
+var Transport = function () {
+    var that = {};
+    var position = new Position();
+
+    that.setPosition = function(x, y) {
+        position.x = x;
+        position.y = y;
+        //position = new Position(x,y);
+    };
+
+    that.move = function (x, y, speed) {
+
+    };
+
+    that.draw = function (gfx) {
+        gfx.fontSize('21px');
+        gfx.drawCircle(position.x, position.y, 15, '#0000FF');
+        gfx.write(position.x - 10.5, position.y + 9, '#FFF', "W");
+    };
+
+    return that;
 
 }
 
+var Workshop = function (x, y) {
+    var that = {};
+    var position = new Position();
 
+    that.setPosition = function(x, y) {
+        position = new Position(x,y);
+    };
+
+    that.draw = function (gfx) {
+        gfx.fontSize('32px');
+        gfx.drawCircle(position.x, position.y, 25, '#FFFF00');
+        gfx.write(position.x - 16, position.y + 11, '#FFF', "W");
+    };
+
+    return that;
+}
 
 
 // game logic
@@ -44,10 +86,16 @@ engine.init();
 
 var ctx = engine.getContext();
 var gfx = new Gfx(ctx);
+var mouse = engine.getMouse();
 
 var socket = io();
 
 var market = new Marketplace();
+market.setPosition(100, 100);
+var workshop = new Workshop();
+workshop.setPosition(700, 100);
+var transport = new Transport();
+transport.setPosition(400, 100);
 var chat = new Chat('chatBox', 'messageField', socket, function(message) {
     gfx.write(0, 0, '#000000', message);
 });
@@ -55,8 +103,11 @@ var chat = new Chat('chatBox', 'messageField', socket, function(message) {
 
 // draw something ...
 function gameLoop() {
-
     updateLogic();
+
+    ctx.fillStyle = '#00FF00';
+    ctx.clearRect(0, 0, engine.getContext().width, engine.getContext().height);
+
     drawGraphics();
 
     requestAnimationFrame(gameLoop);
@@ -64,9 +115,12 @@ function gameLoop() {
 requestAnimationFrame(gameLoop);
 
 function updateLogic() {
-
+    //console.log(mouse.position().x, mouse.position().y);
+    transport.setPosition(mouse.position().x, mouse.position().y);
 }
 
 function drawGraphics() {
     market.draw(gfx);
+    workshop.draw(gfx);
+    transport.draw(gfx);
 }
