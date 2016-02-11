@@ -117,7 +117,9 @@ var ctx = engine.getContext();
 var gfx = new Gfx(ctx);
 var mouse = engine.getMouse();
 
-var player = new Player(io());
+var socket = io();
+
+var player = new Player(socket);
 player.setName("TestUser");
 
 var market = new Marketplace();
@@ -129,8 +131,7 @@ var transport = new Transport();
 transport.setPosition(400, 100);
 transport.setPosition(600, 100);
 
-var chat = new Chat('chatBox', 'messageField');
-
+var chat = new Chat('chatBox', 'messageField', socket);
 
 
 var lastFrameTimeMs = 0,
@@ -141,8 +142,7 @@ var lastFrameTimeMs = 0,
 // register objects for events
 engine.registerListener('click', transport.click);
 
-var socket = io();
-
+socket.emit('test', 'some message');
 
 // draw something ...
 function gameLoop(timestamp) {
