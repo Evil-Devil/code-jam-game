@@ -92,18 +92,19 @@ var ctx = engine.getContext();
 var gfx = new Gfx(ctx);
 var mouse = engine.getMouse();
 
-var socket = io();
+var player = new Player();
+player.setName("TestUser");
 
 var market = new Marketplace();
+
 market.setPosition(100, 100);
 var workshop = new Workshop();
 workshop.setPosition(700, 100);
 var transport = new Transport();
 transport.setPosition(400, 100);
 transport.setPosition(600, 100);
-var chat = new Chat('chatBox', 'messageField', socket, function(message) {
-    gfx.write(0, 0, '#ff0000', message);
-});
+
+var chat = new Chat('chatBox', 'messageField');
 
 
 // draw something ...
@@ -126,4 +127,5 @@ function drawGraphics() {
     market.draw(gfx);
     workshop.draw(gfx);
     transport.draw(gfx);
+    chat.draw(gfx);
 }
