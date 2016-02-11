@@ -11,6 +11,7 @@ var Engine = function(canvasId) {
 
     function retrieveContext() {
         context = canvas.getContext("2d");
+        context.font = 'Verdana 14px normal';
     }
 
     that.getCanvas = function() {
