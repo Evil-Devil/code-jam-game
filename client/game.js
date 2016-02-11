@@ -42,18 +42,43 @@ var Transport = function () {
     var that = {};
     var position = new Position();
     var destination = null;
+    var velocity = 0.25;
+
+
+    function move(delta) {
+
+        var distance = Math.sqrt(Math.pow(destination.x-position.x,2)+Math.pow(destination.y-position.y,2));
+        var distX = (destination.x - position.x) / distance;
+        var distY = (destination.y - position.y) / distance;
+
+        position.x += (distX  * velocity * delta);
+        position.y += (distY * velocity * delta);
+
+        if (Math.sqrt(Math.pow(destination.x-position.x,2)+Math.pow(destination.y-position.y,2)) >= distance) {
+            destination = null;
+            console.log("destination reached");
+            return;
+        }
+    }
+
+    that.click = function(e) {
+        destination = new Position(e.layerX, e.layerY);
+        console.log(destination);
+    }
 
     that.setPosition = function(x, y) {
-        position.x = x;
-        position.y = y;
-        //position = new Position(x,y);
+        position = new Position(x,y);
     };
 
-    that.move = function (x, y, speed) {
-        //if (null === destination) return;
-        position.x += 5;
-
+    that.setDestination = function (x, y) {
+        destination = new Position(x,y);
     };
+
+    that.update = function(delta) {
+        if (null !== destination) {
+            move(delta);
+        }
+    }
 
     that.draw = function (gfx) {
         gfx.fontSize('21px');
@@ -102,23 +127,44 @@ var transport = new Transport();
 transport.setPosition(400, 100);
 transport.setPosition(600, 100);
 var chat = new Chat('chatBox', 'messageField', socket, function(message) {
-    gfx.write(0, 0, '#ff0000', message);
+    gfx.write(10, 10, '#ff0000', message);
 });
 
 
-// draw something ...
-function gameLoop() {
-    updateLogic();
-    drawGraphics();
+var lastFrameTimeMs = 0,
+    maxFPS = 60,
+    delta = 0,
+    timestep = 1000 / 60;
 
+// register objects for events
+engine.registerListener('click', transport.click);
+
+// draw something ...
+function gameLoop(timestamp) {
+    // Throttle the frame rate.
+    if (timestamp < lastFrameTimeMs + (1000 / maxFPS)) {
+        requestAnimationFrame(gameLoop);
+        return;
+    }
+    delta += timestamp - lastFrameTimeMs;
+    lastFrameTimeMs = timestamp;
+
+    while (delta >= timestep) {
+        updateLogic(timestep);
+        delta -= timestep;
+    }
+    drawGraphics();
     requestAnimationFrame(gameLoop);
 }
 requestAnimationFrame(gameLoop);
 
-function updateLogic() {
-    //console.log(mouse.position().x, mouse.position().y);
-    transport.setPosition(mouse.position().x, mouse.position().y);
-    //transport.move(0,0,0);
+function updateLogic(delta) {
+    //console.log(mouse.lastClickPosition(), mouse.position());
+    //if (mouse.lastClickPosition() != mouse.position()) {
+    //    console.log("not equal");
+    //    transport.setDestination(mouse.lastClickPosition().x, mouse.lastClickPosition().y);
+    //}
+    transport.update(delta);
 }
 
 function drawGraphics() {

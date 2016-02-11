@@ -1,10 +1,13 @@
-var Engine = function(id) {
+var Engine = function (id) {
 
     var that = {};
     var canvas = null;
     var canvasId = id;
     var context = null;
     var mouse = null;
+    var eventListener = {
+        click: []
+    };
 
     function retrieveCanvas() {
         canvas = document.getElementById(canvasId);
@@ -16,33 +19,42 @@ var Engine = function(id) {
     }
 
     function registerEvents() {
-        canvas.addEventListener('click', mouse.click, false);
+        canvas.addEventListener('click', doClick, false);
         //canvas.addEventListener('mousemove', mouse.move, false);
     }
 
-    function onClick(e) {
+    function doClick(e) {
+        for (action in eventListener.click) {
+            eventListener.click[action](e);
+        }
     }
 
-    function onMouseMove(e) {
-        console.log(e);
+
+    that.registerListener = function(action, callback) {
+        if (typeof(eventListener[action]) === 'undefined') {
+            throw exception("no event listener for action: " + action);
+        }
+        //console.log(eventListener[action]);
+        //console.log(callback);
+        eventListener[action].push(callback);
     }
 
-    that.getCanvas = function() {
+    that.getCanvas = function () {
         return canvas;
     }
 
-    that.getContext = function() {
+    that.getContext = function () {
         return context;
     }
 
-    that.init = function() {
+    that.init = function () {
         retrieveCanvas();
         retrieveContext();
-        mouse = new Mouse(canvas.offsetLeft, canvas.offsetTop);
         registerEvents();
+        mouse = new Mouse(that);
     }
 
-    that.getMouse = function() {
+    that.getMouse = function () {
         return mouse;
     }
 
@@ -50,16 +62,18 @@ var Engine = function(id) {
 
 };
 
-var Position = function(x, y) {
+var Position = function (x, y) {
     this.x = x || 0;
     this.y = y || 0;
 
 }
 
-var Mouse = function(offsetX, offsetY) {
-    var offsets = {x: offsetX || 0, y: offsetY || 0};
+var Mouse = function (engine) {
+    var offsets = {x: 0, y: 0};
     var that = {};
     var position = new Position();
+    var lastPosition = new Position();
+    var lastClickPosition = new Position();
 
     function logPosition() {
         console.log("X: " + position.x + " Y: " + position.y);
@@ -70,19 +84,32 @@ var Mouse = function(offsetX, offsetY) {
         position.y = e.pageY - offsets.y;
     }
 
-    that.click = function(e) {
+    that.click = function (e) {
+        //console.log("click in mouse executed");
         calcPosition(e);
         logPosition();
     }
 
-    that.move = function(e) {
+    that.move = function (e) {
         calcPosition(e);
         logPosition();
     }
 
-    that.position = function() {
+    that.position = function () {
         return position;
     }
+
+    that.lastPosition = function () {
+        return lastPosition;
+    }
+
+    that.lastClickPosition = function() {
+        return lastClickPosition;
+    }
+
+
+    engine.registerListener('click', that.click);
+
 
     return that;
 
