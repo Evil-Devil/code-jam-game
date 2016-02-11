@@ -17,7 +17,8 @@ var Marketplace = function() {
     that.setPosition = function(x, y) {
         //position.x = x;
         //position.y = y;
-        position = new Position(x,y);
+
+        that.position = new Position(x,y);
     }
 
     that.buy = function () {
@@ -40,6 +41,7 @@ var Marketplace = function() {
 var Transport = function () {
     var that = {};
     var position = new Position();
+    var destination = null;
 
     that.setPosition = function(x, y) {
         position.x = x;
@@ -48,6 +50,8 @@ var Transport = function () {
     };
 
     that.move = function (x, y, speed) {
+        //if (null === destination) return;
+        position.x += 5;
 
     };
 
@@ -96,18 +100,15 @@ var workshop = new Workshop();
 workshop.setPosition(700, 100);
 var transport = new Transport();
 transport.setPosition(400, 100);
+transport.setPosition(600, 100);
 var chat = new Chat('chatBox', 'messageField', socket, function(message) {
-    gfx.write(0, 0, '#000000', message);
+    gfx.write(0, 0, '#ff0000', message);
 });
 
 
 // draw something ...
 function gameLoop() {
     updateLogic();
-
-    ctx.fillStyle = '#00FF00';
-    ctx.clearRect(0, 0, engine.getContext().width, engine.getContext().height);
-
     drawGraphics();
 
     requestAnimationFrame(gameLoop);
@@ -117,9 +118,11 @@ requestAnimationFrame(gameLoop);
 function updateLogic() {
     //console.log(mouse.position().x, mouse.position().y);
     transport.setPosition(mouse.position().x, mouse.position().y);
+    //transport.move(0,0,0);
 }
 
 function drawGraphics() {
+    gfx.clear(engine.getCanvas().width,engine.getCanvas().height);
     market.draw(gfx);
     workshop.draw(gfx);
     transport.draw(gfx);

@@ -4,6 +4,11 @@ var Gfx = function (context) {
 
     var fontFamily = 'Verdana';
 
+    that.clear = function(width, height) {
+        //ctx.fillStyle = '#00FF00';
+        ctx.clearRect(0, 0, width, height);
+    }
+
     that.fontSize = function(size) {
         ctx.font = size + ' ' + fontFamily;
     };

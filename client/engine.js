@@ -50,6 +50,12 @@ var Engine = function(id) {
 
 };
 
+var Position = function(x, y) {
+    this.x = x || 0;
+    this.y = y || 0;
+
+}
+
 var Mouse = function(offsetX, offsetY) {
     var offsets = {x: offsetX || 0, y: offsetY || 0};
     var that = {};
