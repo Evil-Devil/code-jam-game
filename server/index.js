@@ -7,7 +7,7 @@ var fs = require('fs');
 
 global.MessageTypes = require('./../shared/messageTypes.js');
 
-var game = require('./game.js')(io);
+var Game = require('./game.js')(io);
 var Player = require('../shared/player.js');
 
 
@@ -53,8 +53,10 @@ io.on('connection', function(socket){
         console.log('user disconnected');
         chat.removePlayer(player);
         lobby.removePlayer(player);
+        Game.removePlayer(player);
     });
 
     chat.addPlayer(player);
     lobby.addPlayer(player);
+    Game.addPlayer(player);
 });

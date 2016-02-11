@@ -31,6 +31,11 @@ var Player = function(socket) {
         return socket;
     };
 
+    that.pay = function(amount) {
+        console.log(amount);
+        this.setMoney(this.getMoney() - amount);
+    }
+
     return that;
 };
 module.exports = Player;

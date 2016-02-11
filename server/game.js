@@ -7,10 +7,18 @@ module.exports.states = {
 
 module.exports = function(io) {
     var that = this;
+    var playerList = [];
 
     return {
-        registerPlayer: function(player) {
-            console.log(player);
+        addPlayer: function(player) {
+            playerList.push(player);
+            console.log("Player registered to game");
+        },
+        removePlayer: function(player) {
+            var index = playerList.indexOf(player);
+            if (index != -1) {
+                playerList.splice(index, 1);
+            }
         }
     };
 };

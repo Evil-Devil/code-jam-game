@@ -1,3 +1,8 @@
-/**
- * Created by bbehrendt on 11.02.2016.
- */
+var HUD = function(graphics) {
+    var that = {};
+    var gfx = graphics;
+
+    that.drawChat = function() {
+
+    }
+}

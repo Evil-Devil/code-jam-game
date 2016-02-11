@@ -1,3 +1,5 @@
+var module = {exports: null};
+
 var Engine = function (id) {
 
     var that = {};

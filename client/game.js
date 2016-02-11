@@ -43,6 +43,11 @@ var Transport = function () {
     var position = new Position();
     var destination = null;
     var velocity = 0.25;
+    var owner = null;
+
+    that.setOwner = function(player) {
+        owner = player;
+    }
 
 
     function move(delta) {
@@ -56,14 +61,17 @@ var Transport = function () {
 
         if (Math.sqrt(Math.pow(destination.x-position.x,2)+Math.pow(destination.y-position.y,2)) >= distance) {
             destination = null;
-            console.log("destination reached");
+            //console.log("destination reached");
             return;
         }
     }
 
     that.click = function(e) {
         destination = new Position(e.layerX, e.layerY);
-        console.log(destination);
+        //console.log(destination);
+        if (null !== owner) {
+            owner.pay(10);
+        }
     }
 
     that.setPosition = function(x, y) {
@@ -121,6 +129,7 @@ var socket = io();
 
 var player = new Player(socket);
 player.setName("TestUser");
+player.setMoney(500);
 
 var market = new Marketplace();
 
@@ -128,8 +137,8 @@ market.setPosition(100, 100);
 var workshop = new Workshop();
 workshop.setPosition(700, 100);
 var transport = new Transport();
-transport.setPosition(400, 100);
-transport.setPosition(600, 100);
+transport.setPosition(500,500);
+transport.setOwner(player);
 
 var chat = new Chat('chatBox', 'messageField', socket);
 
@@ -141,8 +150,6 @@ var lastFrameTimeMs = 0,
 
 // register objects for events
 engine.registerListener('click', transport.click);
-
-socket.emit('test', 'some message');
 
 // draw something ...
 function gameLoop(timestamp) {
@@ -178,4 +185,19 @@ function drawGraphics() {
     workshop.draw(gfx);
     transport.draw(gfx);
     chat.draw(gfx);
+    drawHUD(gfx);
+}
+
+function drawHUD(gfx) {
+    var outText = "" + player.getName() + " | Money: " + player.getMoney();
+    gfx.fontSize('24px');
+    gfx.write(100, 50, '#00FF00', outText);
+
+    //var players = lobby.getPlayers();
+    //var startY = 50;
+    //for (p in players) {
+    //    outText = "" + p.getName() + " | Money: " + p.getMoney();
+    //    gfx.write(400, startY, '#ff0000', outText);
+    //}
+
 }
