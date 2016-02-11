@@ -13,6 +13,7 @@ body {
 #gameCanvas {
     border: 1px solid #FF0000;
     margin: 10px 0 0 150px;
+    background: url("world_draf1_1024.jpg") no-repeat;
 }
 
 #chatBox {
