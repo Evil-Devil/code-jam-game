@@ -1,7 +1,6 @@
 var Lobby = function() {
 
     var that = {};
-
     var players = [];
     var readyPlayers = [];
     var currentPlayer = null;

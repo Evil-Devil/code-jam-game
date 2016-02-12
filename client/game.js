@@ -128,12 +128,16 @@ var Workshop = function (x, y) {
 var engine = new Engine("gameCanvas");
 engine.init();
 
+
+var lastFrameTimeMs = 0;
+var maxFPS = 60;
+var delta = 0;
+var timestep = 1000 / 60;
+
 var ctx = engine.getContext();
 var gfx = new Gfx(ctx);
 var mouse = engine.getMouse();
-
 var socket = io();
-
 var lobby = new Lobby();
 
 var player = new Player(-1, socket);
@@ -141,6 +145,8 @@ player.onNameChanged = function (name) {
     socket.emit(MessageTypes.PLAYER_NAME_SET, name);
 };
 player.setName("TestUser" + Math.random().toString(36).substring(2, 5));
+
+lobby.setCurrentPlayer(player);
 
 var market = new Marketplace();
 market.setPosition(100, 100);
@@ -153,15 +159,8 @@ transport.setPosition(500,500);
 transport.setOwner(player);
 
 var chat = new Chat('chatBox', 'messageField', socket);
-
-
-var hud = new HUD(chat, player);
 var hud = new HUD(engine, chat, lobby);
 
-var lastFrameTimeMs = 0,
-    maxFPS = 60,
-    delta = 0,
-    timestep = 1000 / 60;
 
 // register objects for events
 engine.registerListener('click', transport.click);
