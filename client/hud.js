@@ -16,9 +16,8 @@ var HUD = function(engine, chat, lobby, market) {
     }
     function drawPlayerInfo(gfx) {
         gfx.fontSize('14px');
-        gfx.drawOuadOutline(2, 2, 140, 26, 4, borderColor);
+        gfx.drawImage(0,-20,engine.getImage('balkenoben.png'));
         gfx.write(8, 20, textColor, currentPlayer.getName());
-        gfx.drawOuadOutline(142, 2, 70, 26, 4, borderColor);
         gfx.write(148, 20, textColor, currentPlayer.getMoney() + " " + moneySign);
     }
 

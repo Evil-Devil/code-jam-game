@@ -2,7 +2,7 @@
 // ==================================================
 var engine = new Engine("gameCanvas");
 engine.init();
-engine.preloader(['world_chat.png', 'haus.png', 'markt.png', 'wood.png', 'metal.png', 'grain.png', 'wool.png', 'ui_markt.png']);
+engine.preloader(['world_chat.png', 'haus.png', 'markt.png', 'wood.png', 'metal.png', 'grain.png', 'wool.png', 'ui_markt.png', 'balkenoben.png']);
 
 
 var gameObjects = new GameObjects();
@@ -57,6 +57,7 @@ nameForm.onsubmit = function () {
 // register objects for events
 engine.registerListener('click', market.click);
 engine.registerListener('click', market.clickStock);
+engine.registerListener('click', market.clickStockClose);
 
 socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
     var player = new Player(playerIndex, socket);

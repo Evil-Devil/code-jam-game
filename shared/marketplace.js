@@ -74,6 +74,9 @@ var Marketplace = function(player) {
     that.clickStock = function(e) {
 
     }
+    that.clickStockClose = function(e) {
+        if (!showStock) return;
+    }
     return that;
 }
 module.exports = Marketplace;
