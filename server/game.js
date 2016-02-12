@@ -2,6 +2,7 @@
 var Workshop = require('../shared/workshop.js');
 var Market = require('../shared/marketplace.js');
 var Good = require('../shared/good.js');
+var GameObjects = require('../shared/gameObjects.js');
 
 module.exports.states = {
     INIT: 1,
@@ -14,6 +15,7 @@ module.exports = function(lobby, io) {
     var that = this;
     var lobby = lobby;
     var io = io;
+    var gameObjects = new GameObjects();
 
     var possibleWorkshopPositions = [
         {
@@ -29,14 +31,12 @@ module.exports = function(lobby, io) {
             y: 400
         },
         {
-            x: 500,
+            x: 750,
             y: 250
         }
     ];
     var remainingWorkshopPositions = possibleWorkshopPositions.slice(0);
 
-    var allWorkshops = [];
-    var allTransports = [];
     var highestTransportId = 0;
     var market = null;
 
@@ -50,9 +50,11 @@ module.exports = function(lobby, io) {
         /*io.getSocket().on(MessageTypes.MARKET_STOCK_REQUEST, function(msg) {
             console.log(msg);
         });*/
+        gameObjects.setMarketplace(market);
     }
 
     var getTransport = function (id) {
+        var allTransports = gameObjects.getAllTransports();
         for (var i = 0; i < allTransports.length; i++) {
             if (allTransports[i].id == id) {
                 return allTransports[i];
@@ -75,11 +77,12 @@ module.exports = function(lobby, io) {
         workshop.setPosition(workshopPosition.x, workshopPosition.y);
         workshop.owner = player;
 
+        var allWorkshops = gameObjects.getAllWorkshops();
         for (var i = 0; i < allWorkshops.length; i++) {
             player.getSocket().emit(MessageTypes.CREATE_WORKSHOP, allWorkshops[i]);
         }
 
-        allWorkshops.push(workshop);
+        gameObjects.addWorkshop(workshop);
 
         console.log(workshop);
 
@@ -106,11 +109,12 @@ module.exports = function(lobby, io) {
         player.getSocket().broadcast.emit(MessageTypes.CREATE_TRANSPORT, transport);
         player.getSocket().emit(MessageTypes.CREATE_TRANSPORT, transport);
 
+        var allTransports = gameObjects.getAllTransports();
         for (var i = 0; i < allTransports.length; i++) {
             player.getSocket().emit(MessageTypes.CREATE_TRANSPORT, allTransports[i]);
         }
 
-        allTransports.push(transport);
+        gameObjects.addTransport(transport);
 
         player.getSocket().on(MessageTypes.MOVE_TRANSPORT, function (movementObj) {
             var transporter = getTransport(movementObj.id);
