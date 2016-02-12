@@ -9,8 +9,6 @@ global.MessageTypes = require('./../shared/messageTypes.js');
 
 var Game = require('./game.js')(io);
 var Player = require('../shared/player.js');
-
-
 var lobby = require('../shared/lobby.js')();
 var chat = require('./chat.js')(lobby);
 
