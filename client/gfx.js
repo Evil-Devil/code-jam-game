@@ -52,7 +52,10 @@ var Gfx = function (context) {
     }
     that.drawImage = function(x, y, img) {
         ctx.drawImage(img, x, y);
-    }
+    };
+    that.drawImageScaled = function(x, y, width, height, img) {
+        ctx.drawImage(img, x, y, width, height);
+    };
 
     return that;
 }

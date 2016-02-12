@@ -2,7 +2,7 @@
 // ==================================================
 var engine = new Engine("gameCanvas");
 engine.init();
-engine.preloader(['client/world_chat.png']);
+engine.preloader(['client/world_chat.png', 'client/haus.png', 'client/markt.png']);
 
 var lastFrameTimeMs = 0;
 var maxFPS = 60;
@@ -158,9 +158,9 @@ function updateLogic(delta) {
 
 function drawGraphics() {
     gfx.clear(engine.getCanvas().width,engine.getCanvas().height);
-    market.draw(gfx);
+    market.draw(gfx, engine);
     for (var i = 0; i < allWorkshops.length; i++) {
-        allWorkshops[i].draw(gfx);
+        allWorkshops[i].draw(gfx, engine);
     }
     for (var i = 0; i < allTransports.length; i++) {
         allTransports[i].draw(gfx);

@@ -2,8 +2,8 @@ var Marketplace = function(player) {
     var player = player;
     var that = {};
     var position = new Position();
-    var width = 50;
-    var height = 50;
+    var width = 150;
+    var height = 150;
     var boundary = new Boundary()
     var stock = [];
 
@@ -28,14 +28,11 @@ var Marketplace = function(player) {
         console.log("you sold goods");
     };
 
-    that.draw = function(gfx) {
-        gfx.fontSize('32px');
-        gfx.drawCircle(position.x, position.y, 25, '#FF0000');
-        gfx.write(position.x - 13, position.y + 10, '#000', "M");
+    that.draw = function(gfx, engine) {
+        gfx.drawImageScaled(boundary.getLeft(), boundary.getTop(), boundary.getWidth(), boundary.getHeight(), engine.getImage('client/markt.png'));
     }
     that.click = function(e) {
 
-        console.log("M Click: ", e.layerX, e.layerY)
         if (!boundary.isWithin(e.layerX, e.layerY)) {
             return false;
         }
