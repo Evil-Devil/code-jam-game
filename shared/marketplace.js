@@ -69,9 +69,16 @@ var Marketplace = function(player, gameObjects) {
         if (stockDrawIndex > -1) {
             gfx.drawQuad(stockBoundaries[stockDrawIndex].getLeft(), stockBoundaries[stockDrawIndex].getTop(), 130, 132, 'rgba(255,255,0,0.2')
         }
-        // 238.5, 89.5 || 130 132
-        //throw Error();
-        //gfx.drawQuad(x + 10, y - 8, 130, 132, 'rgba(255,255,0,0.2');
+        // write out transport stock
+        transporter = gameObjects.getTransportsOfPlayer(player.getIndex())[0];
+        var c = 0;
+        for (var i=0; i<transporter.stock.length; i++) {
+            if (typeof transporter.stock[i] == 'undefined') {
+                continue;
+            }
+            c++;
+            gfx.write(x + 300, y + (c * 20), '#0000FF', transporter.stock[i].name + ": " + transporter.stock[i].amount);
+        }
     }
     that.click = function(e) {
         if (showStock || !boundary.isWithin(e.layerX, e.layerY)) {
