@@ -36,6 +36,15 @@ module.exports = function(lobby) {
     var allTransports = [];
     var highestTransportId = 0;
 
+    var getTransport = function (id) {
+        for (var i = 0; i < allTransports.length; i++) {
+            if (allTransports[i].id == id) {
+                return allTransports[i];
+            }
+        }
+        throw 'received move for non existent transporter';
+    };
+
     that.setupPlayer = function (player) {
         var workshop = new Workshop();
 
@@ -73,6 +82,13 @@ module.exports = function(lobby) {
         }
 
         allTransports.push(transport);
+
+        player.getSocket().on(MessageTypes.MOVE_TRANSPORT, function (movementObj) {
+            var transporter = getTransport(movementObj.id);
+            transporter.position = movementObj.position;
+
+            player.getSocket().broadcast.emit(MessageTypes.MOVE_TRANSPORT, movementObj);
+        });
     };
 
     that.removePlayer = function (player) {

@@ -25,6 +25,10 @@ var Transport = function (id) {
         that.position.x += (distX  * velocity * delta);
         that.position.y += (distY * velocity * delta);
 
+        if (distX != 0 || distY != 0) {
+            that.owner.getSocket().emit(MessageTypes.MOVE_TRANSPORT, {position: that.position, id: that.id});
+        }
+
         if (Math.sqrt(Math.pow(destination.x-that.position.x,2)+Math.pow(destination.y-that.position.y,2)) >= distance) {
             destination = null;
             //console.log("destination reached");

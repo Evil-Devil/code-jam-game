@@ -101,6 +101,22 @@ socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
     }
 });
 
+socket.on(MessageTypes.MOVE_TRANSPORT, function (movementObj) {
+    console.log('received transport for ' + movementObj.id);
+
+    var transporter = getTransport(movementObj.id);
+    transporter.position = movementObj.position;
+});
+
+var getTransport = function (id) {
+    for (var i = 0; i < allTransports.length; i++) {
+        if (allTransports[i].id == id) {
+            return allTransports[i];
+        }
+    }
+    throw 'received move for non existent transporter';
+};
+
 socket.on(MessageTypes.CREATE_TRANSPORT, function (transport) {
     var realTransport = new Transport(transport.id);
     realTransport.position = transport.position;
