@@ -42,10 +42,10 @@ var Marketplace = function(player) {
     }
     that.drawStock = function(gfx) {
         gfx.fontSize('18px');
-        var x = position.x - 200;
-        var y = position.y - 100;
         var localStock = that.getStock();
 
+        var x = stockBoundary.getLeft() + 41;
+        var y = stockBoundary.getTop() + 60;
         var r = 0;
         var c = 0;
         gfx.drawImage(stockBoundary.getLeft(), stockBoundary.getTop(),engine.getImage('ui_markt.png'));
@@ -55,7 +55,7 @@ var Marketplace = function(player) {
             //var msg = that.getStock()[i].name + " " + that.getStock()[i].price + " EURO";
             //gfx.write(position.x, position.y + (i*20), '#00ff00', msg);
             //console.log(localStock[i].name + '.png');
-            gfx.drawImage(x + (r * 153), y + (c * 108), engine.getImage(localStock[i].name.toLowerCase() + '.png'));
+            gfx.drawImage(x + (r * 153), y + (c * 183), engine.getImage(localStock[i].name.toLowerCase() + '.png'));
             r++;
         }
     }
