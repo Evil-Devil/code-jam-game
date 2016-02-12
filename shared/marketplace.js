@@ -6,7 +6,8 @@ var Marketplace = function(player) {
     var height = 150;
     var boundary = new Boundary()
     var stock = [];
-    showStock = false;
+    var showStock = false;
+    var stockBoundary = new Boundary(512, 250, 649, 425);
 
     that.addToStock = function(good) {
         stock.push(good);
@@ -30,21 +31,31 @@ var Marketplace = function(player) {
     };
 
     that.draw = function(gfx, engine) {
-        gfx.drawImageScaled(boundary.getLeft(), boundary.getTop(), boundary.getWidth(), boundary.getHeight(), engine.getImage('client/markt.png'));
+        gfx.drawImageScaled(boundary.getLeft(), boundary.getTop(), boundary.getWidth(), boundary.getHeight(), engine.getImage('markt.png'));
         if (showStock) {
             that.drawStock(gfx);
         }
     }
     that.drawStock = function(gfx) {
         gfx.fontSize('18px');
+        var x = position.x - 200;
+        var y = position.y - 100;
+        var localStock = that.getStock();
 
-        for (var i= 0;i<that.getStock().length; i++) {
-            var msg = that.getStock()[i].name + " " + that.getStock()[i].price + " EURO";
-            gfx.write(position.x, position.y + (i*20), '#00ff00', msg);
+        var r = 0;
+        var c = 0;
+        gfx.drawImage(stockBoundary.getLeft(), stockBoundary.getTop(),engine.getImage('ui_markt.png'));
+        for (var i= 0, il=localStock.length; i<il; i++) {
+            if (i > 0 && i % 2 == 0) c++;
+            if (r >= 2) r=0;
+            //var msg = that.getStock()[i].name + " " + that.getStock()[i].price + " EURO";
+            //gfx.write(position.x, position.y + (i*20), '#00ff00', msg);
+            //console.log(localStock[i].name + '.png');
+            gfx.drawImage(x + (r * 153), y + (c * 108), engine.getImage(localStock[i].name.toLowerCase() + '.png'));
+            r++;
         }
     }
     that.click = function(e) {
-
         if (!boundary.isWithin(e.layerX, e.layerY)) {
             return false;
         }
@@ -55,6 +66,9 @@ var Marketplace = function(player) {
             stock = stocklist;
             showStock = true;
         })
+    }
+    that.clickStock = function(e) {
+
     }
     return that;
 }
