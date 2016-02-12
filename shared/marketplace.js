@@ -7,7 +7,8 @@ var Marketplace = function(player) {
     var boundary = new Boundary()
     var stock = [];
     var showStock = false;
-    var stockBoundary = new Boundary(512, 250, 649, 425);
+    var stockBoundaries = [];
+    var uiBoundary = new Boundary(512, 250, 649, 425);
     var closeBoundary = new Boundary(791,92,30,30);
 
     that.addToStock = function(good) {
@@ -45,11 +46,11 @@ var Marketplace = function(player) {
         gfx.fontSize('18px');
         var localStock = that.getStock();
 
-        var x = stockBoundary.getLeft() + 41;
-        var y = stockBoundary.getTop() + 60;
+        var x = uiBoundary.getLeft() + 41;
+        var y = uiBoundary.getTop() + 60;
         var r = 0;
         var c = 0;
-        gfx.drawImage(stockBoundary.getLeft(), stockBoundary.getTop(),engine.getImage('ui_markt.png'));
+        gfx.drawImage(uiBoundary.getLeft(), uiBoundary.getTop(),engine.getImage('ui_markt.png'));
         for (var i= 0, il=localStock.length; i<il; i++) {
             if (i > 0 && i % 2 == 0) c++;
             if (r >= 2) r=0;
@@ -57,8 +58,18 @@ var Marketplace = function(player) {
             //gfx.write(position.x, position.y + (i*20), '#00ff00', msg);
             //console.log(localStock[i].name + '.png');
             gfx.drawImage(x + (r * 153), y + (c * 183), engine.getImage(localStock[i].name.toLowerCase() + '.png'));
+
+            if (typeof stockBoundaries[i] == 'undefined') {
+                stockBoundaries[i] = new Boundary(x + 10 + 65 + (r * 153),  y - 8 + 66 + (c * 183), 130, 132);
+            } else {
+                gfx.drawQuad(stockBoundaries[i].getLeft(), stockBoundaries[i].getTop(), 130, 132, 'rgba(255,255,0,0.2');
+            }
+
             r++;
         }
+        // 238.5, 89.5 || 130 132
+        //throw Error();
+        //gfx.drawQuad(x + 10, y - 8, 130, 132, 'rgba(255,255,0,0.2');
     }
     that.click = function(e) {
         if (showStock || !boundary.isWithin(e.layerX, e.layerY)) {

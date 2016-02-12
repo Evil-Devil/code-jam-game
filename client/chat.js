@@ -28,6 +28,8 @@ var Chat = function(chatFormId, chatInputId, socket) {
 
     that.draw = function (gfx, x, y) {
         var currentTime = Date.now();
+        var maxMessages = 5;
+        var shown = 0;
 
         for (var i = 0; i < lastMessages.length; i++) {
             var transparency = 1 - (currentTime - lastMessages[i].timestamp) / fadeOutDuration;
@@ -35,9 +37,13 @@ var Chat = function(chatFormId, chatInputId, socket) {
                 lastMessages.splice(i, 1);
                 i--;
             } else {
-                lastMessages[i].transparency = transparency;
+                lastMessages[lastMessages.length - (1 + i)].transparency = transparency;
                 gfx.fontSize('12px');
-                gfx.write(x, y + i * 15,  'rgba(0, 0, 0, ' + transparency + ')', lastMessages[i].message);
+                gfx.write(x, y + i * 15,  'rgba(0, 0, 0, ' + transparency + ')', lastMessages[lastMessages.length - (1 + i)].message);
+            }
+            shown++;
+            if (shown >= maxMessages) {
+                break;
             }
         }
     };

@@ -78,7 +78,7 @@ socket.on(MessageTypes.USER_DISCONNECTED, function(playerIndex) {
 
 socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
     console.log('creating workshop');
-    console.log(workshop);
+    //console.log(workshop);
 
     var realWorkshop = new Workshop(workshop.id, gameObjects, lobby);
     realWorkshop.position = workshop.position;
@@ -86,7 +86,7 @@ socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
 
     gameObjects.addWorkshop(realWorkshop);
     engine.registerListener('click', realWorkshop.click);
-    console.log(realWorkshop);
+    //console.log(realWorkshop);
 });
 
 socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
