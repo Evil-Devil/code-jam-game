@@ -19,7 +19,14 @@ var Transport = function (id) {
 
     function move(delta) {
 
+        if (destination == null)
+            return;
+
         var distance = Math.sqrt(Math.pow(destination.x-that.position.x,2)+Math.pow(destination.y-that.position.y,2));
+
+        if (distance == 0)
+            return;
+
         var distX = (destination.x - that.position.x) / distance;
         var distY = (destination.y - that.position.y) / distance;
 
@@ -56,6 +63,7 @@ var Transport = function (id) {
     };
 
     that.update = function(delta) {
+        console.log(that.position);
         if (null !== destination) {
             move(delta);
         }
