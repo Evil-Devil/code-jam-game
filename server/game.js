@@ -125,6 +125,7 @@ module.exports = function(lobby, io) {
     };
 
     that.removePlayer = function (player) {
+        var allWorkshops = gameObjects.getAllWorkshops();
         for (var i = 0; i < allWorkshops.length; i++) {
             if (allWorkshops.owner == player) {
                 player.getSocket().broadcast.emit(MessageTypes.DESTROY_WORKSHOP, workshop);

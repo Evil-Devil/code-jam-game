@@ -41,6 +41,16 @@ var GameObjects = function () {
         return allWorkshops;
     };
 
+    that.getWorkshopsOfPlayer = function (playerIndex) {
+        var resultList = [];
+        for (var i = 0; i < allWorkshops.length; i++) {
+            if (allWorkshops[i].owner.index == playerIndex) {
+                resultList.push(allWorkshops[i]);
+            }
+        }
+        return resultList;
+    };
+
     that.setMarketplace = function (setMarketplace) {
         marketplace = setMarketplace;
     };
