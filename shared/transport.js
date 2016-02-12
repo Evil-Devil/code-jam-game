@@ -2,6 +2,7 @@ var Transport = function (id) {
     var that = {};
     var destination = null;
     var velocity = 0.25;
+    that.stock = [];
 
     that.setOwner = function(player) {
         that.owner = player;

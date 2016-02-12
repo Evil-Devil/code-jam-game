@@ -11,6 +11,7 @@ var Marketplace = function(player, gameObjects) {
     var uiBoundary = new Boundary(512, 250, 649, 425);
     var closeBoundary = new Boundary(791,92,30,30);
     var buyBoundary = new Boundary(667 + 63, 402 + 17, 126, 34);
+    var stockDrawIndex = -1;
 
     that.addToStock = function(good) {
         stock.push(good);
@@ -62,11 +63,11 @@ var Marketplace = function(player, gameObjects) {
 
             if (typeof stockBoundaries[i] == 'undefined') {
                 stockBoundaries[i] = new Boundary(x + 10 + 65 + (r * 153),  y - 8 + 66 + (c * 183), 130, 132);
-            } else {
-                gfx.drawQuad(stockBoundaries[i].getLeft(), stockBoundaries[i].getTop(), 130, 132, 'rgba(255,255,0,0.2');
             }
-
             r++;
+        }
+        if (stockDrawIndex > -1) {
+            gfx.drawQuad(stockBoundaries[stockDrawIndex].getLeft(), stockBoundaries[stockDrawIndex].getTop(), 130, 132, 'rgba(255,255,0,0.2')
         }
         // 238.5, 89.5 || 130 132
         //throw Error();
@@ -84,9 +85,7 @@ var Marketplace = function(player, gameObjects) {
             showStock = true;
         })
     }
-    that.clickStock = function(e) {
 
-    }
     that.clickStockBuy = function(e) {
         if (!showStock || !buyBoundary.isWithin(e.layerX, e.layerY)) {
             return false;
@@ -103,6 +102,15 @@ var Marketplace = function(player, gameObjects) {
         showStock = false;
     }
     that.clickStockGoods = function(e) {
+        if (!showStock) return false;
+        for (var i= 0, il=stockBoundaries.length; i<il; i++) {
+            if (stockBoundaries[i].isWithin(e.layerX, e.layerY)) {
+                stockDrawIndex = i;
+                break;
+            }
+        }
+        transporter = gameObjects.getTransportsOfPlayer(player.getIndex())[0];
+
 
     }
     return that;
