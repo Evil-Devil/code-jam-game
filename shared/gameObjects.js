@@ -16,7 +16,15 @@ var GameObjects = function () {
                 return allTransports[i];
             }
         }
-        throw Error('received move for non existent transporter');
+        throw Error('received id for non existent transporter');
+    };
+
+    that.removeTransport = function (id) {
+        for (var i = 0; i < allTransports.length; i++) {
+            if (allTransports[i].id == id) {
+                allTransports.splice(i, 1);
+            }
+        }
     };
 
     that.getTransportsOfPlayer = function (playerIndex) {
@@ -35,6 +43,23 @@ var GameObjects = function () {
 
     that.addWorkshop = function (workshop) {
         allWorkshops.push(workshop);
+    };
+
+    that.getWorkshop = function (id) {
+        for (var i = 0; i < allWorkshops.length; i++) {
+            if (allWorkshops[i].id == id) {
+                return allWorkshops[i];
+            }
+        }
+        throw Error('received id for non existent workshop');
+    };
+
+    that.removeWorkshop = function (id) {
+        for (var i = 0; i < allWorkshops.length; i++) {
+            if (allWorkshops[i].id == id) {
+                allWorkshops.splice(i, 1);
+            }
+        }
     };
 
     that.getAllWorkshops = function () {

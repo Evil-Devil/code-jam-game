@@ -1,5 +1,5 @@
 
-var Workshop = function (gameObjects) {
+var Workshop = function (id, gameObjects) {
     var that = {};
 
     var width = 120;
@@ -11,6 +11,7 @@ var Workshop = function (gameObjects) {
 
     that.position = new Position();
     that.owner = null;
+    that.id = id;
 
     that.getBoundary = function () {
         return new Boundary(that.position.x, that.position.y, width, height);

@@ -77,7 +77,7 @@ socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
     console.log('creating workshop');
     console.log(workshop);
 
-    var realWorkshop = new Workshop(gameObjects);
+    var realWorkshop = new Workshop(workshop.id, gameObjects);
     realWorkshop.position = workshop.position;
     realWorkshop.owner = lobby.getPlayer(workshop.owner.index);
 
@@ -86,17 +86,15 @@ socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
     console.log(realWorkshop);
 });
 
-/*socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
-    console.log('trying to remove workshop');
-    console.log(workshop);
+socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
 
-    for (var i = 0; i < allWorkshops; i++) {
-        if (allWorkshops[i].position.x == workshop.position.x && allWorkshops[i].position.y == workshop.position.y) {
-            allWorkshops.splice(i, 1);
-            break;
-        }
-    }
-});*/
+    gameObjects.removeWorkshop(workshop.id);
+});
+
+socket.on(MessageTypes.DESTROY_TRANSPORT, function (transport) {
+
+    gameObjects.removeTransport(transport.id);
+});
 
 socket.on(MessageTypes.MOVE_TRANSPORT, function (movementObj) {
     console.log('received transport for ' + movementObj.id);

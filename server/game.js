@@ -23,12 +23,12 @@ module.exports = function(lobby, io) {
             y: 100
         },
         {
-            x: 600,
+            x: 500,
             y: 400
         },
         {
             x: 200,
-            y: 400
+            y: 350
         },
         {
             x: 750,
@@ -38,6 +38,7 @@ module.exports = function(lobby, io) {
     var remainingWorkshopPositions = possibleWorkshopPositions.slice(0);
 
     var highestTransportId = 0;
+    var highestWorkshopId = 0;
     var market = null;
 
     that.initMarket = function() {
@@ -64,7 +65,7 @@ module.exports = function(lobby, io) {
     };
 
     that.setupPlayer = function (player) {
-        var workshop = new Workshop();
+        var workshop = new Workshop(highestWorkshopId++, gameObjects);
 
         var workshopPositionIndex = Math.floor(Math.random() * remainingWorkshopPositions.length);
         var workshopPosition = remainingWorkshopPositions[workshopPositionIndex];
@@ -125,11 +126,16 @@ module.exports = function(lobby, io) {
     };
 
     that.removePlayer = function (player) {
-        var allWorkshops = gameObjects.getAllWorkshops();
+        var allWorkshops = gameObjects.getWorkshopsOfPlayer(player.index);
         for (var i = 0; i < allWorkshops.length; i++) {
-            if (allWorkshops.owner == player) {
-                player.getSocket().broadcast.emit(MessageTypes.DESTROY_WORKSHOP, workshop);
-            }
+            player.getSocket().broadcast.emit(MessageTypes.DESTROY_WORKSHOP, allWorkshops[i]);
+            gameObjects.removeWorkshop(allWorkshops[i].id);
+        }
+
+        var allTransports = gameObjects.getTransportsOfPlayer(player.index);
+        for (var i = 0; i < allTransports.length; i++) {
+            player.getSocket().broadcast.emit(MessageTypes.DESTROY_TRANSPORT, allTransports[i]);
+            gameObjects.removeTransport(allTransports[i].id);
         }
     }
 

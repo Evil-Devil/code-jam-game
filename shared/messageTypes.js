@@ -7,6 +7,7 @@ var MessageTypes = {
     CREATE_WORKSHOP: 'create workshop',
     DESTROY_WORKSHOP: 'destroy workshop',
     CREATE_TRANSPORT: 'create transport',
+    DESTROY_TRANSPORT: 'destroy transport',
     MOVE_TRANSPORT: 'move transport',
     MARKET_STOCK_REQUEST: 'request marketstock',
     MARKET_STOCK_RESPONSE: 'response marketstock'
