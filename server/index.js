@@ -28,8 +28,8 @@ lobby.onPlayerRemoved = function (playerIndex) {
     }
 };
 var Player = require('../shared/player.js');
-var Game = require('./game.js')(lobby);
-Game.init();
+var Game = require('./game.js')(lobby, io);
+Game.initMarket();
 
 
 var chat = require('./chat.js')(lobby);

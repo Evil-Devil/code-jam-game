@@ -27,13 +27,9 @@ socket.on(MessageTypes.RECEIVE_USER_ID, function (userId) {
 lobby.setCurrentPlayer(player);
 lobby.addPlayer(player);
 
-var market = new Marketplace();
-market.setPosition(100, 100);
+var market = new Marketplace(player);
+market.setPosition(512, 300);
 // set some goods
-market.addToStock(new Good('Grain', 3, 100));
-market.addToStock(new Good('Wood', 2, 100));
-market.addToStock(new Good('Metal', 6, 100));
-market.addToStock(new Good('Wool', 2, 100));
 
 var allWorkshops = [];
 var allTransports = [];

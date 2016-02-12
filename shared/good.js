@@ -15,3 +15,4 @@ var Good = function(name, price, amount) {
 
     return that;
 }
+module.exports = Good;

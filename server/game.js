@@ -1,6 +1,7 @@
 
 var Workshop = require('../shared/workshop.js');
 var Market = require('../shared/marketplace.js');
+var Good = require('../shared/good.js');
 
 module.exports.states = {
     INIT: 1,
@@ -9,9 +10,10 @@ module.exports.states = {
     STOPPED: 4
 };
 
-module.exports = function(lobby) {
+module.exports = function(lobby, io) {
     var that = this;
     var lobby = lobby;
+    var io = io;
 
     var possibleWorkshopPositions = [
         {
@@ -38,13 +40,16 @@ module.exports = function(lobby) {
     var highestTransportId = 0;
     var market = null;
 
-    function initMarket() {
+    that.initMarket = function() {
         market = new Market();
-        console.log("market initialized");
-    }
+        market.addToStock(new Good('Grain', 3, 100));
+        market.addToStock(new Good('Wood', 2, 100));
+        market.addToStock(new Good('Metal', 6, 100));
+        market.addToStock(new Good('Wool', 2, 100));
 
-    that.init = function() {
-        initMarket();
+        /*io.getSocket().on(MessageTypes.MARKET_STOCKLIST, function(msg) {
+            console.log(msg);
+        });*/
     }
 
     var getTransport = function (id) {
@@ -78,9 +83,22 @@ module.exports = function(lobby) {
 
         console.log(workshop);
 
+        /* ==============================================================================
+         *  MARKETPLACE CALLBACK LOGIC
+         */
+        player.getSocket().on(MessageTypes.MARKET_STOCKLIST, function(msg) {
+            console.log(msg);
+        });
+
+        /* ==============================================================================
+         *  WORKSHOP CALLBACK LOGIC
+         */
         player.getSocket().broadcast.emit(MessageTypes.CREATE_WORKSHOP, workshop);
         player.getSocket().emit(MessageTypes.CREATE_WORKSHOP, workshop);
 
+        /* ==============================================================================
+         *  TRANSPORT CALLBACK LOGIC
+         */
         var transport = new Transport(highestTransportId++);
         transport.position = workshop.position;
         transport.owner = player;
