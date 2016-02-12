@@ -119,10 +119,6 @@ var Engine = function (id) {
 
 };
 
-var Position = function (x, y) {
-    this.x = x || 0;
-    this.y = y || 0;
-}
 var Boundary = function (x, y, width, height) {
     var x1 = x - (width / 2 || 0);
     var y1 = y - (height / 2 || 0);

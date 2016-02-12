@@ -6,9 +6,8 @@ var url = require('url');
 var fs = require('fs');
 
 global.MessageTypes = require('./../shared/messageTypes.js');
+global.Position = require('./../shared/position.js');
 
-var Game = require('./game.js')(io);
-var Player = require('../shared/player.js');
 var lobby = require('../shared/lobby.js')();
 lobby.onPlayerAdded = function (player) {
     var players = lobby.getPlayers();
@@ -17,7 +16,7 @@ lobby.onPlayerAdded = function (player) {
         player.getSocket().emit(MessageTypes.PLAYER_NAME_SET + players[i].getIndex(), players[i].getName());
 
         players[i].getSocket().emit(MessageTypes.USER_CONNECTED, player.getIndex());
-        players[i].getSocket().emit(MessageTypes.PLAYER_NAME_SET, player.getName());
+        players[i].getSocket().emit(MessageTypes.PLAYER_NAME_SET + player.getIndex(), player.getName());
     }
 };
 lobby.onPlayerRemoved = function (playerIndex) {
@@ -26,6 +25,9 @@ lobby.onPlayerRemoved = function (playerIndex) {
         players[i].getSocket().emit(MessageTypes.USER_DISCONNECTED, playerIndex);
     }
 };
+
+var Game = require('./game.js')(lobby);
+var Player = require('../shared/player.js');
 
 var chat = require('./chat.js')(lobby);
 
@@ -75,10 +77,12 @@ io.on('connection', function(socket){
         console.log('user disconnected');
         chat.removePlayer(player);
         lobby.removePlayer(player);
+
         Game.removePlayer(player);
     });
 
     chat.addPlayer(player);
     lobby.addPlayer(player);
-    Game.addPlayer(player);
+
+    Game.setupPlayer(player);
 });

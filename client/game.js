@@ -31,8 +31,7 @@ market.addToStock(new Good('Wood', 2, 100));
 market.addToStock(new Good('Metal', 6, 100));
 market.addToStock(new Good('Wool', 2, 100));
 
-var workshop = new Workshop();
-workshop.setPosition(700, 100);
+var allWorkshops = [];
 
 var transport = new Transport();
 transport.setPosition(500,500);
@@ -78,6 +77,26 @@ socket.on(MessageTypes.USER_DISCONNECTED, function(playerIndex) {
     console.log('player disconnected. current players count: ' + lobby.getPlayers().length);
 });
 
+socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
+    var realWorkshop = new Workshop();
+    realWorkshop.position = workshop.position;
+
+    allWorkshops.push(realWorkshop);
+    console.log(realWorkshop);
+});
+
+socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
+    console.log('trying to remove workshop');
+    console.log(workshop);
+
+    for (var i = 0; i < allWorkshops; i++) {
+        if (allWorkshops[i].position.x == workshop.position.x && allWorkshops[i].position.y == workshop.position.y) {
+            allWorkshops.splice(i, 1);
+            break;
+        }
+    }
+});
+
 // draw something ...
 function gameLoop(timestamp) {
 
@@ -110,7 +129,9 @@ function updateLogic(delta) {
 function drawGraphics() {
     gfx.clear(engine.getCanvas().width,engine.getCanvas().height);
     market.draw(gfx);
-    workshop.draw(gfx);
+    for (var i = 0; i < allWorkshops.length; i++) {
+        allWorkshops[i].draw(gfx);
+    }
     transport.draw(gfx);
     chat.draw(gfx);
     hud.draw(gfx);

@@ -7,7 +7,11 @@ var Transport = function () {
 
     that.setOwner = function(player) {
         owner = player;
-    }
+    };
+
+    that.getOwner = function() {
+        return owner;
+    };
 
 
     function move(delta) {

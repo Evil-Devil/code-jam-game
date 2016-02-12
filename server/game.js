@@ -1,3 +1,6 @@
+
+var Workshop = require('../shared/workshop.js');
+
 module.exports.states = {
     INIT: 1,
     RUNNING: 2,
@@ -5,20 +8,60 @@ module.exports.states = {
     STOPPED: 4
 };
 
-module.exports = function(io) {
+module.exports = function(lobby) {
     var that = this;
-    var playerList = [];
+    var lobby = lobby;
 
-    return {
-        addPlayer: function(player) {
-            playerList.push(player);
-            console.log("Player registered to game");
+    var possibleWorkshopPositions = [
+        {
+            x: 700,
+            y: 100
         },
-        removePlayer: function(player) {
-            var index = playerList.indexOf(player);
-            if (index != -1) {
-                playerList.splice(index, 1);
+        {
+            x: 600,
+            y: 400
+        },
+        {
+            x: 200,
+            y: 400
+        },
+        {
+            x: 500,
+            y: 250
+        }
+    ];
+
+    var allWorkshops = [];
+
+    that.setupPlayer = function (player) {
+        var workshop = new Workshop();
+
+        var workshopPositionIndex = Math.floor(Math.random() * possibleWorkshopPositions.length);
+        var workshopPosition = possibleWorkshopPositions[workshopPositionIndex];
+        possibleWorkshopPositions.splice(workshopPositionIndex, 1);
+
+        workshop.setPosition(workshopPosition.x, workshopPosition.y);
+        workshop.owner = player;
+
+        for (var i = 0; i < allWorkshops.length; i++) {
+            player.getSocket().emit(MessageTypes.CREATE_WORKSHOP, allWorkshops[i]);
+        }
+
+        allWorkshops.push(workshop);
+
+        console.log(workshop);
+
+        player.getSocket().broadcast.emit(MessageTypes.CREATE_WORKSHOP, workshop);
+        player.getSocket().emit(MessageTypes.CREATE_WORKSHOP, workshop);
+    };
+
+    that.removePlayer = function (player) {
+        for (var i = 0; i < allWorkshops.length; i++) {
+            if (allWorkshops.owner == player) {
+                player.getSocket().broadcast.emit(MessageTypes.DESTROY_WORKSHOP, workshop);
             }
         }
-    };
+    }
+
+    return that;
 };
