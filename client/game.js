@@ -80,7 +80,7 @@ socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
     console.log('creating workshop');
     console.log(workshop);
 
-    var realWorkshop = new Workshop(workshop.id, gameObjects);
+    var realWorkshop = new Workshop(workshop.id, gameObjects, lobby);
     realWorkshop.position = workshop.position;
     realWorkshop.owner = lobby.getPlayer(workshop.owner.index);
 

@@ -65,7 +65,7 @@ module.exports = function(lobby, io) {
     };
 
     that.setupPlayer = function (player) {
-        var workshop = new Workshop(highestWorkshopId++, gameObjects);
+        var workshop = new Workshop(highestWorkshopId++, gameObjects, lobby);
 
         var workshopPositionIndex = Math.floor(Math.random() * remainingWorkshopPositions.length);
         var workshopPosition = remainingWorkshopPositions[workshopPositionIndex];

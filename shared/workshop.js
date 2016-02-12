@@ -1,5 +1,5 @@
 
-var Workshop = function (id, gameObjects) {
+var Workshop = function (id, gameObjects, lobby) {
     var that = {};
 
     var width = 120;
@@ -22,17 +22,23 @@ var Workshop = function (id, gameObjects) {
     };
 
     that.click = function (e) {
+        if (that.owner != lobby.currentPlayer()) {
+            return;
+        }
+
         if (showButton) {
             showButton = false;
 
-            var boundary = that.getBoundary();
-            //move transport to marketplace
-            var marketplacePos = gameObjects.getMarketplace().getPosition();
-            var transports = gameObjects.getTransportsOfPlayer(that.owner.index);
-            for (var i = 0; i < transports.length; i++) {
-                var transportPos = transports[i].position;
-                if (boundary.isWithin(transportPos.x, transportPos.y)) {
-                    transports[i].setDestination(marketplacePos.x, marketplacePos.y);
+            if (that.getBoundary().isWithin(e.layerX, e.layerY)) {
+                var boundary = that.getBoundary();
+                //move transport to marketplace
+                var marketplacePos = gameObjects.getMarketplace().getPosition();
+                var transports = gameObjects.getTransportsOfPlayer(lobby.currentPlayer().index);
+                for (var i = 0; i < transports.length; i++) {
+                    var transportPos = transports[i].position;
+                    if (boundary.isWithin(transportPos.x, transportPos.y)) {
+                        transports[i].setDestination(marketplacePos.x, marketplacePos.y);
+                    }
                 }
             }
         } else {
@@ -49,7 +55,7 @@ var Workshop = function (id, gameObjects) {
 
         if (showButton) {
             gfx.fontSize('18px');
-            gfx.write(boundary.getLeft(), boundary.getTop(), '#000000', 'to workshop');
+            gfx.write(boundary.getLeft(), boundary.getTop(), '#000000', 'to marketplace');
         }
     };
 
