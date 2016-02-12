@@ -5,6 +5,8 @@ engine.init();
 engine.preloader(['world_chat.png', 'haus.png', 'markt.png', 'wood.png', 'metal.png', 'grain.png', 'wool.png', 'ui_markt.png']);
 
 
+var gameObjects = new GameObjects();
+
 var lastFrameTimeMs = 0;
 var maxFPS = 60;
 var delta = 0;
@@ -30,10 +32,8 @@ lobby.addPlayer(player);
 
 var market = new Marketplace(player);
 market.setPosition(512, 300);
+gameObjects.setMarketplace(market);
 // set some goods
-
-var allWorkshops = [];
-var allTransports = [];
 
 var chat = new Chat('chatBox', 'messageField', socket);
 var hud = new HUD(engine, chat, lobby, market);
@@ -79,15 +79,16 @@ socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
     console.log('creating workshop');
     console.log(workshop);
 
-    var realWorkshop = new Workshop();
+    var realWorkshop = new Workshop(gameObjects);
     realWorkshop.position = workshop.position;
     realWorkshop.owner = lobby.getPlayer(workshop.owner.index);
 
-    allWorkshops.push(realWorkshop);
+    gameObjects.addWorkshop(realWorkshop);
+    engine.registerListener('click', realWorkshop.click);
     console.log(realWorkshop);
 });
 
-socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
+/*socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
     console.log('trying to remove workshop');
     console.log(workshop);
 
@@ -97,34 +98,25 @@ socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
             break;
         }
     }
-});
+});*/
 
 socket.on(MessageTypes.MOVE_TRANSPORT, function (movementObj) {
     console.log('received transport for ' + movementObj.id);
 
-    var transporter = getTransport(movementObj.id);
+    var transporter = gameObjects.getTransport(movementObj.id);
     transporter.position = movementObj.position;
 });
-
-var getTransport = function (id) {
-    for (var i = 0; i < allTransports.length; i++) {
-        if (allTransports[i].id == id) {
-            return allTransports[i];
-        }
-    }
-    throw 'received move for non existent transporter';
-};
 
 socket.on(MessageTypes.CREATE_TRANSPORT, function (transport) {
     var realTransport = new Transport(transport.id);
     realTransport.position = transport.position;
     realTransport.owner = lobby.getPlayer(transport.owner.index);
 
-    if (realTransport.owner == lobby.currentPlayer()) {
+    /*if (realTransport.owner == lobby.currentPlayer()) {
         engine.registerListener('click', realTransport.click);
-    }
+    }*/
 
-    allTransports.push(realTransport);
+    gameObjects.addTransport(realTransport);
 });
 
 // draw something ...
@@ -153,8 +145,10 @@ function updateLogic(delta) {
     //    console.log("not equal");
     //    transport.setDestination(mouse.lastClickPosition().x, mouse.lastClickPosition().y);
     //}
-    for (var i = 0; i < allTransports.length; i++) {
-        allTransports[i].update(delta);
+
+    var transports = gameObjects.getAllTransports();
+    for (var i = 0; i < transports.length; i++) {
+        transports[i].update(delta);
     }
 }
 
@@ -162,11 +156,14 @@ function drawGraphics() {
     gfx.clear(engine.getCanvas().width,engine.getCanvas().height);
 
     market.draw(gfx, engine);
-    for (var i = 0; i < allWorkshops.length; i++) {
-        allWorkshops[i].draw(gfx, engine);
+
+    var workshops = gameObjects.getAllWorkshops();
+    for (var i = 0; i < workshops.length; i++) {
+        workshops[i].draw(gfx, engine);
     }
-    for (var i = 0; i < allTransports.length; i++) {
-        allTransports[i].draw(gfx);
+    var transports = gameObjects.getAllTransports();
+    for (var i = 0; i < transports.length; i++) {
+        transports[i].draw(gfx);
     }
     chat.draw(gfx);
     hud.draw(gfx);

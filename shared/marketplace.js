@@ -22,6 +22,10 @@ var Marketplace = function(player) {
         boundary = new Boundary(x,y, width, height);
     }
 
+    that.getPosition = function () {
+        return position;
+    };
+
     that.buy = function () {
         console.log("you bought goods");
     };
