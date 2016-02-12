@@ -8,6 +8,7 @@ var fs = require('fs');
 global.MessageTypes = require('./../shared/messageTypes.js');
 global.Position = require('./../shared/position.js');
 global.Transport = require('./../shared/transport.js');
+global.Boundary = require('../shared/boundary.js');
 
 var lobby = require('../shared/lobby.js')();
 lobby.onPlayerAdded = function (player) {

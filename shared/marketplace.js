@@ -1,5 +1,3 @@
-var Boundary = require('../shared/boundary.js');
-
 var Marketplace = function() {
     var that = {};
     var position = new Position();
