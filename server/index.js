@@ -26,9 +26,10 @@ lobby.onPlayerRemoved = function (playerIndex) {
         players[i].getSocket().emit(MessageTypes.USER_DISCONNECTED, playerIndex);
     }
 };
-
-var Game = require('./game.js')(lobby);
 var Player = require('../shared/player.js');
+var Game = require('./game.js')(lobby);
+Game.init();
+
 
 var chat = require('./chat.js')(lobby);
 

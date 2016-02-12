@@ -1,5 +1,6 @@
 
 var Workshop = require('../shared/workshop.js');
+var Market = require('../shared/marketplace.js');
 
 module.exports.states = {
     INIT: 1,
@@ -35,6 +36,16 @@ module.exports = function(lobby) {
     var allWorkshops = [];
     var allTransports = [];
     var highestTransportId = 0;
+    var market = null;
+
+    function initMarket() {
+        market = new Market();
+        console.log("market initialized");
+    }
+
+    that.init = function() {
+        initMarket();
+    }
 
     that.setupPlayer = function (player) {
         var workshop = new Workshop();
