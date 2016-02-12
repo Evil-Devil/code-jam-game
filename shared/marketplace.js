@@ -110,6 +110,11 @@ var Marketplace = function(player, gameObjects) {
             }
         }
         transporter = gameObjects.getTransportsOfPlayer(player.getIndex())[0];
+        if (typeof transporter.stock[stockDrawIndex] == 'undefined') {
+            transporter.stock[stockDrawIndex] = stock[stockDrawIndex];
+            transporter.stock[stockDrawIndex].amount = 0;
+        }
+        transporter.stock[stockDrawIndex].amount++;
 
 
     }
