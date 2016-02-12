@@ -21,6 +21,7 @@ player.onNameChanged = function (name) {
 };
 
 lobby.setCurrentPlayer(player);
+lobby.addPlayer(player);
 
 var market = new Marketplace();
 market.setPosition(100, 100);
@@ -55,8 +56,6 @@ nameForm.onsubmit = function () {
 engine.registerListener('click', transport.click);
 engine.registerListener('click', market.click);
 
-socket.emit('test', 'some message');
-
 socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
     var player = new Player(playerIndex, socket);
     lobby.addPlayer(player);
@@ -69,7 +68,7 @@ socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
 });
 
 socket.on(MessageTypes.USER_DISCONNECTED, function(playerIndex) {
-    lobby.removePlayerAt(playerIndex);
+    lobby.removePlayerWithIndex(playerIndex);
 
     console.log('player disconnected. current players count: ' + lobby.getPlayers().length);
 });

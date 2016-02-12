@@ -2,7 +2,7 @@ var Chat = function(chatFormId, chatInputId, socket) {
 
     var that = {};
 
-    var fadeOutDuration = 10000;
+    var fadeOutDuration = 13000;
 
     var socket = socket;
     var chatBoxForm = document.getElementById(chatFormId);
@@ -31,7 +31,7 @@ var Chat = function(chatFormId, chatInputId, socket) {
 
         for (var i = 0; i < lastMessages.length; i++) {
             var transparency = 1 - (currentTime - lastMessages[i].timestamp) / fadeOutDuration;
-            if (transparency <= 0.2) {
+            if (transparency <= 0.3) {
                 lastMessages.splice(i, 1);
                 i--;
             } else {

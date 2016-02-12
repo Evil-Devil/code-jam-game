@@ -20,7 +20,6 @@ var Player = function(index, socket) {
         if (that.onNameChanged != undefined) {
             that.onNameChanged(setName, name);
         }
-        console.log('name of player ' + index + ' is ' + setName);
         name = setName;
     };
 

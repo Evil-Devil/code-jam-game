@@ -20,14 +20,15 @@ var Lobby = function() {
         return players.length;
     };
 
+    that.onPlayerAdded = null;
+
     that.addPlayer = function(player) {
         if (players.indexOf(player) != -1) {
             throw 'player already added';
         }
 
-        for (var i = 0; i < players.length; i++) {
-            player.getSocket().emit(MessageTypes.USER_CONNECTED, i);
-            player.getSocket().emit(MessageTypes.PLAYER_NAME_SET + i, players[i].getName());
+        if (that.onPlayerAdded != null) {
+            that.onPlayerAdded(player);
         }
 
         players.push(player);
@@ -36,19 +37,37 @@ var Lobby = function() {
         console.log('new player count ' + players.length);
     };
 
-    that.removePlayer = function(player) {
-        var playerIndex = players.indexOf(player);
-        if (playerIndex != -1) {
-            that.removePlayerAt(playerIndex);
+    var removePlayerAt = function(index) {
+        var playerIndex = players[index].getIndex();
+
+        players.splice(index, 1);
+        readyPlayers.splice(index, 1);
+
+        if (that.onPlayerRemoved != null) {
+            that.onPlayerRemoved(playerIndex);
         }
     };
 
-    that.removePlayerAt = function(playerIndex) {
-        players.splice(playerIndex, 1);
-        readyPlayers.splice(playerIndex, 1);
+    that.onPlayerRemoved = null;
 
+    that.removePlayer = function(player) {
+        var index = players.indexOf(player);
+        if (index != -1) {
+            removePlayerAt(index);
+        }
+    };
+
+    that.removePlayerWithIndex = function(playerIndex) {
+        var index = -1;
         for (var i = 0; i < players.length; i++) {
-            players[i].getSocket().emit(MessageTypes.USER_DISCONNECTED, playerIndex);
+            if (players[i].getIndex() == playerIndex) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index != -1) {
+            removePlayerAt(index);
         }
     };
 
