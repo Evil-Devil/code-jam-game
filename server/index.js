@@ -12,6 +12,23 @@ var Player = require('../shared/player.js');
 
 
 var lobby = require('../shared/lobby.js')();
+lobby.onPlayerAdded = function (player) {
+    var players = lobby.getPlayers();
+    for (var i = 0; i < players.length; i++) {
+        player.getSocket().emit(MessageTypes.USER_CONNECTED, players[i].getIndex());
+        player.getSocket().emit(MessageTypes.PLAYER_NAME_SET + players[i].getIndex(), players[i].getName());
+
+        players[i].getSocket().emit(MessageTypes.USER_CONNECTED, player.getIndex());
+        players[i].getSocket().emit(MessageTypes.PLAYER_NAME_SET, player.getName());
+    }
+};
+lobby.onPlayerRemoved = function (playerIndex) {
+    var players = lobby.getPlayers();
+    for (var i = 0; i < players.length; i++) {
+        players[i].getSocket().emit(MessageTypes.USER_DISCONNECTED, playerIndex);
+    }
+};
+
 var chat = require('./chat.js')(lobby);
 
 app.get('/', function (request, response) {
@@ -56,7 +73,6 @@ io.on('connection', function(socket){
         console.log('name of player with id ' + player.getIndex() + ' to ' + playerName);
     });
 
-    io.emit(MessageTypes.USER_CONNECTED, player.getIndex());
     socket.on('disconnect', function () {
         console.log('user disconnected');
         chat.removePlayer(player);
