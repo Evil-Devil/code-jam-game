@@ -59,6 +59,11 @@ var Engine = function (id) {
     that.getMouse = function () {
         return mouse;
     }
+    that.loadImage = function(src) {
+        var img = new Image();
+        img.src = src;
+        return img;
+    }
 
     return that;
 
@@ -76,7 +81,6 @@ var Boundary = function(x, y, width, height) {
     var that = {};
 
     that.isWithin =function(x, y) {
-        console.log(x1, x2, y1, y2);
         if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
             return true;
         }

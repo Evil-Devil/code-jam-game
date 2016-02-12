@@ -19,6 +19,7 @@ var Marketplace = function() {
 
     that.setPosition = function(x, y) {
         position = new Position(x,y);
+        boundary = new Boundary(x,y, width, height);
     }
     that.buy = function () {
         console.log("you bought goods");
@@ -134,8 +135,8 @@ var player = new Player(socket);
 player.setName("TestUser" + Math.random().toString(36).substring(2, 5));
 
 var market = new Marketplace();
-
 market.setPosition(100, 100);
+
 var workshop = new Workshop();
 workshop.setPosition(700, 100);
 var transport = new Transport();
@@ -144,8 +145,9 @@ transport.setOwner(player);
 
 var chat = new Chat('chatBox', 'messageField', socket);
 var lobby = new Lobby();
+lobby.setCurrentPlayer(player);
 
-var hud = new HUD(chat, player);
+var hud = new HUD(engine, chat, lobby);
 
 var lastFrameTimeMs = 0,
     maxFPS = 60,

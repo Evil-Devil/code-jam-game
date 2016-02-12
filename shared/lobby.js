@@ -4,6 +4,14 @@ var Lobby = function() {
 
     var players = [];
     var readyPlayers = [];
+    var currentPlayer = null;
+
+    that.setCurrentPlayer = function(player) {
+        currentPlayer = player;
+    }
+    that.currentPlayer = function() {
+        return currentPlayer;
+    }
 
     that.getPlayers = function() {
         return players;
