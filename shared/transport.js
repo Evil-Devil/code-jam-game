@@ -39,17 +39,19 @@ var Transport = function (id) {
     that.click = function(e) {
         destination = new Position(e.layerX, e.layerY);
         //console.log(destination);
-        if (null !== that.owner) {
-            that.owner.pay(10);
-        }
-    }
+    };
 
     that.setPosition = function(x, y) {
         that.position = new Position(x,y);
     };
 
     that.setDestination = function (x, y) {
-        destination = new Position(x,y);
+        if (destination == null || destination.x != x || destination.y != y) {
+            destination = new Position(x, y);
+            if (null !== that.owner) {
+                that.owner.pay(10);
+            }
+        }
     };
 
     that.update = function(delta) {
