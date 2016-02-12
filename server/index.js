@@ -7,6 +7,7 @@ var fs = require('fs');
 
 global.MessageTypes = require('./../shared/messageTypes.js');
 global.Position = require('./../shared/position.js');
+global.Transport = require('./../shared/transport.js');
 
 var lobby = require('../shared/lobby.js')();
 lobby.onPlayerAdded = function (player) {
@@ -67,6 +68,7 @@ io.on('connection', function(socket){
     player.onNameChanged = function(name) {
         socket.broadcast.emit(MessageTypes.PLAYER_NAME_SET + player.getIndex(), name);
     };
+    socket.emit(MessageTypes.RECEIVE_USER_ID, player.getIndex());
 
     socket.on(MessageTypes.PLAYER_NAME_SET, function (playerName) {
         player.setName(playerName);

@@ -3,7 +3,6 @@ var Player = function(index, socket) {
     var that = {};
     var name;
     var money = 0;
-    var index = index;
     var socket = socket;
 
     that.onNameChanged = null;
@@ -21,10 +20,12 @@ var Player = function(index, socket) {
             that.onNameChanged(setName, name);
         }
         name = setName;
-    };
+    }
+
+    that.index = index;
 
     that.getIndex = function() {
-        return index;
+        return that.index;
     };
 
     that.getMoney = function() {

@@ -71,6 +71,15 @@ var Lobby = function() {
         }
     };
 
+    that.getPlayer = function (playerIndex) {
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].getIndex() == playerIndex) {
+                return players[i];
+            }
+        }
+        return null;
+    };
+
     that.setPlayerReadyStatus = function(player, status) {
         var playerIndex = readyPlayers.indexOf(player);
         if (playerIndex == -1) {

@@ -20,6 +20,10 @@ player.onNameChanged = function (name) {
     socket.emit(MessageTypes.PLAYER_NAME_SET, name);
 };
 
+socket.on(MessageTypes.RECEIVE_USER_ID, function (userId) {
+    player.index = userId;
+});
+
 lobby.setCurrentPlayer(player);
 lobby.addPlayer(player);
 
@@ -32,10 +36,7 @@ market.addToStock(new Good('Metal', 6, 100));
 market.addToStock(new Good('Wool', 2, 100));
 
 var allWorkshops = [];
-
-var transport = new Transport();
-transport.setPosition(500,500);
-transport.setOwner(player);
+var allTransports = [];
 
 var chat = new Chat('chatBox', 'messageField', socket);
 var hud = new HUD(engine, chat, lobby);
@@ -57,7 +58,6 @@ nameForm.onsubmit = function () {
 }
 
 // register objects for events
-engine.registerListener('click', transport.click);
 engine.registerListener('click', market.click);
 
 socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
@@ -78,8 +78,12 @@ socket.on(MessageTypes.USER_DISCONNECTED, function(playerIndex) {
 });
 
 socket.on(MessageTypes.CREATE_WORKSHOP, function (workshop) {
+    console.log('creating workshop');
+    console.log(workshop);
+
     var realWorkshop = new Workshop();
     realWorkshop.position = workshop.position;
+    realWorkshop.owner = lobby.getPlayer(workshop.owner.index);
 
     allWorkshops.push(realWorkshop);
     console.log(realWorkshop);
@@ -95,6 +99,18 @@ socket.on(MessageTypes.DESTROY_WORKSHOP, function (workshop) {
             break;
         }
     }
+});
+
+socket.on(MessageTypes.CREATE_TRANSPORT, function (transport) {
+    var realTransport = new Transport(transport.id);
+    realTransport.position = transport.position;
+    realTransport.owner = lobby.getPlayer(transport.owner.index);
+
+    if (realTransport.owner == lobby.currentPlayer()) {
+        engine.registerListener('click', realTransport.click);
+    }
+
+    allTransports.push(realTransport);
 });
 
 // draw something ...
@@ -123,7 +139,9 @@ function updateLogic(delta) {
     //    console.log("not equal");
     //    transport.setDestination(mouse.lastClickPosition().x, mouse.lastClickPosition().y);
     //}
-    transport.update(delta);
+    for (var i = 0; i < allTransports.length; i++) {
+        allTransports[i].update(delta);
+    }
 }
 
 function drawGraphics() {
@@ -132,7 +150,9 @@ function drawGraphics() {
     for (var i = 0; i < allWorkshops.length; i++) {
         allWorkshops[i].draw(gfx);
     }
-    transport.draw(gfx);
+    for (var i = 0; i < allTransports.length; i++) {
+        allTransports[i].draw(gfx);
+    }
     chat.draw(gfx);
     hud.draw(gfx);
 }
