@@ -144,7 +144,6 @@ var player = new Player(-1, socket);
 player.onNameChanged = function (name) {
     socket.emit(MessageTypes.PLAYER_NAME_SET, name);
 };
-player.setName("TestUser" + Math.random().toString(36).substring(2, 5));
 
 lobby.setCurrentPlayer(player);
 
@@ -161,6 +160,30 @@ transport.setOwner(player);
 var chat = new Chat('chatBox', 'messageField', socket);
 var hud = new HUD(engine, chat, lobby);
 
+
+var hud = new HUD(chat, player);
+
+var lastFrameTimeMs = 0,
+    maxFPS = 60,
+    delta = 0,
+    timestep = 1000 / 60;
+
+
+var nameForm = document.getElementById('nameForm');
+nameForm.onsubmit = function () {
+    nameForm.style.display = 'none';
+
+    var overlay = document.getElementById('overlay');
+    overlay.style.display = 'none';
+
+    var chatForm = document.getElementById('chatBox');
+    chatForm.style.display = 'block';
+
+    var userNameInput = document.getElementById('userName');
+    player.setName(userNameInput.value);
+
+    return false;
+}
 
 // register objects for events
 engine.registerListener('click', transport.click);
