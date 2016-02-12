@@ -45,7 +45,7 @@ var Workshop = function (id, gameObjects) {
     that.draw = function (gfx, engine) {
         var boundary = that.getBoundary();
 
-        gfx.drawImageScaled(boundary.getLeft(), boundary.getTop(), boundary.getWidth(), boundary.getHeight(), engine.getImage('client/haus.png'));
+        gfx.drawImageScaled(boundary.getLeft(), boundary.getTop(), boundary.getWidth(), boundary.getHeight(), engine.getImage('haus.png'));
 
         if (showButton) {
             gfx.fontSize('18px');

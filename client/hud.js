@@ -10,7 +10,7 @@ var HUD = function(engine, chat, lobby, market) {
 
     function drawChatWindow(gfx) {
 
-        gfx.drawImage(0, 462, engine.getImage('client/world_chat.png'));
+        gfx.drawImage(0, 462, engine.getImage('world_chat.png'));
         gfx.fontSize('24px');
         chat.draw(gfx, 5, 517);
     }

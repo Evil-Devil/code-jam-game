@@ -2,6 +2,7 @@ var module = {exports: null};
 
 var Engine = function (id) {
 
+    var baseImgPath = 'client/img/';
     var that = {};
     var canvas = null;
     var canvasId = id;
@@ -87,7 +88,7 @@ var Engine = function (id) {
             };
 
             // Set the source url of the image
-            image.src = imagefiles[i];
+            image.src = baseImgPath + imagefiles[i];
 
             // Save to the image array
             loadedImages.images[i] = image;

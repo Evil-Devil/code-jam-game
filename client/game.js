@@ -2,7 +2,8 @@
 // ==================================================
 var engine = new Engine("gameCanvas");
 engine.init();
-engine.preloader(['client/world_chat.png', 'client/haus.png', 'client/markt.png']);
+engine.preloader(['world_chat.png', 'haus.png', 'markt.png', 'wood.png', 'metal.png', 'grain.png', 'wool.png', 'ui_markt.png']);
+
 
 var gameObjects = new GameObjects();
 
@@ -55,6 +56,7 @@ nameForm.onsubmit = function () {
 
 // register objects for events
 engine.registerListener('click', market.click);
+engine.registerListener('click', market.clickStock);
 
 socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
     var player = new Player(playerIndex, socket);
@@ -150,6 +152,7 @@ function updateLogic(delta) {
 
 function drawGraphics() {
     gfx.clear(engine.getCanvas().width,engine.getCanvas().height);
+
     market.draw(gfx, engine);
 
     var workshops = gameObjects.getAllWorkshops();
