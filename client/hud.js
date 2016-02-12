@@ -3,8 +3,8 @@ var HUD = function(chat) {
     var chat = chat;
 
     function drawChatWindow(gfx) {
-        gfx.drawQuad(0, 500, 1024, 100, '#000');
-        gfx.drawQuad(2, 502, 1020, 96, '#CECECE');
+        gfx.drawOuadOutline(2, 502, 1020, 96, 4, '#BF8C45');
+        gfx.drawQuad(4, 504, 1016, 92, 'rgba(245,185,100,0.5)');
 
         gfx.fontSize('24px');
         chat.draw(gfx, 5, 517);
@@ -12,6 +12,7 @@ var HUD = function(chat) {
 
 
     that.draw = function(gfx) {
+        gfx.restore();
         drawChatWindow(gfx);
 
     }

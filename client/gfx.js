@@ -4,6 +4,10 @@ var Gfx = function (context) {
 
     var fontFamily = 'Verdana';
 
+    that.restore = function() {
+        ctx.restore();
+    }
+
     that.clear = function(width, height) {
         //ctx.fillStyle = '#00FF00';
         ctx.clearRect(0, 0, width, height);
@@ -21,6 +25,11 @@ var Gfx = function (context) {
     that.drawQuad = function (x, y, width, height, color) {
         ctx.fillStyle = color;
         ctx.fillRect(x, y, width, height);
+    }
+    that.drawOuadOutline = function(x, y, width, height, weight, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = weight;
+        ctx.strokeRect(x, y, width, height);
     }
     that.drawCircle = function (x, y, radius, color) {
         ctx.beginPath();
