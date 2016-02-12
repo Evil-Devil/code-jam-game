@@ -1,4 +1,4 @@
-var Marketplace = function(player) {
+var Marketplace = function(player, gameObjects) {
     var player = player;
     var that = {};
     var position = new Position();
@@ -10,6 +10,7 @@ var Marketplace = function(player) {
     var stockBoundaries = [];
     var uiBoundary = new Boundary(512, 250, 649, 425);
     var closeBoundary = new Boundary(791,92,30,30);
+    var buyBoundary = new Boundary(667 + 63, 402 + 17, 126, 34);
 
     that.addToStock = function(good) {
         stock.push(good);
@@ -86,11 +87,23 @@ var Marketplace = function(player) {
     that.clickStock = function(e) {
 
     }
+    that.clickStockBuy = function(e) {
+        if (!showStock || !buyBoundary.isWithin(e.layerX, e.layerY)) {
+            return false;
+        }
+        showStock = false;
+        var workshop = gameObjects.getWorkshopsOfPlayer(player.getIndex())[0].position;
+        gameObjects.getTransportsOfPlayer(player.getIndex())[0].setDestination(workshop.x, workshop.y);
+
+    }
     that.clickStockClose = function(e) {
         if (!showStock || !closeBoundary.isWithin(e.layerX, e.layerY)) {
             return false;
         }
         showStock = false;
+    }
+    that.clickStockGoods = function(e) {
+
     }
     return that;
 }

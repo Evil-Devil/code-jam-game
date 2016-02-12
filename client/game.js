@@ -30,7 +30,7 @@ socket.on(MessageTypes.RECEIVE_USER_ID, function (userId) {
 lobby.setCurrentPlayer(player);
 lobby.addPlayer(player);
 
-var market = new Marketplace(player);
+var market = new Marketplace(player, gameObjects);
 market.setPosition(512, 300);
 gameObjects.setMarketplace(market);
 // set some goods
@@ -56,8 +56,9 @@ nameForm.onsubmit = function () {
 
 // register objects for events
 engine.registerListener('click', market.click);
-engine.registerListener('click', market.clickStock);
 engine.registerListener('click', market.clickStockClose);
+engine.registerListener('click', market.clickStockGoods);
+engine.registerListener('click', market.clickStockBuy);
 
 socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
     var player = new Player(playerIndex, socket);

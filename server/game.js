@@ -42,7 +42,7 @@ module.exports = function(lobby, io) {
     var market = null;
 
     that.initMarket = function() {
-        market = new Market();
+        market = new Market(null, gameObjects);
         market.addToStock(new Good('Grain', 3, 100));
         market.addToStock(new Good('Wood', 2, 100));
         market.addToStock(new Good('Metal', 6, 100));
