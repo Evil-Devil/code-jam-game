@@ -1,8 +1,8 @@
 var Marketplace = function() {
     var that = {};
     var position = new Position();
-    var width = 50;
-    var height = 50;
+    var width = 150;
+    var height = 150;
     var boundary = new Boundary()
     var stock = [];
 
@@ -27,10 +27,8 @@ var Marketplace = function() {
         console.log("you sold goods");
     };
 
-    that.draw = function(gfx) {
-        gfx.fontSize('32px');
-        gfx.drawCircle(100, 100, 25, '#FF0000');
-        gfx.write(86, 110, '#000', "M");
+    that.draw = function(gfx, engine) {
+        gfx.drawImageScaled(boundary.getLeft(), boundary.getTop(), boundary.getWidth(), boundary.getHeight(), engine.getImage('client/markt.png'));
     }
     that.click = function(e) {
 
