@@ -70,7 +70,7 @@ var Marketplace = function(player, gameObjects) {
             gfx.drawQuad(stockBoundaries[stockDrawIndex].getLeft(), stockBoundaries[stockDrawIndex].getTop(), 130, 132, 'rgba(255,255,0,0.2')
         }
         // write out transport stock
-        transporter = gameObjects.getTransportsOfPlayer(player.getIndex())[0];
+        var transporter = gameObjects.getTransportsOfPlayer(player.getIndex())[0];
         var c = 0;
         for (var i=0; i<transporter.stock.length; i++) {
             if (typeof transporter.stock[i] == 'undefined') {
@@ -116,7 +116,7 @@ var Marketplace = function(player, gameObjects) {
                 break;
             }
         }
-        transporter = gameObjects.getTransportsOfPlayer(player.getIndex())[0];
+        var transporter = gameObjects.getTransportsOfPlayer(player.getIndex())[0];
         if (typeof transporter.stock[stockDrawIndex] == 'undefined') {
             transporter.stock[stockDrawIndex] = stock[stockDrawIndex];
             transporter.stock[stockDrawIndex].amount = 0;
