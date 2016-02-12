@@ -8,6 +8,7 @@ var Marketplace = function(player) {
     var stock = [];
     var showStock = false;
     var stockBoundary = new Boundary(512, 250, 649, 425);
+    var closeBoundary = new Boundary(791,92,30,30);
 
     that.addToStock = function(good) {
         stock.push(good);
@@ -60,7 +61,7 @@ var Marketplace = function(player) {
         }
     }
     that.click = function(e) {
-        if (!boundary.isWithin(e.layerX, e.layerY)) {
+        if (showStock || !boundary.isWithin(e.layerX, e.layerY)) {
             return false;
         }
 
@@ -75,7 +76,10 @@ var Marketplace = function(player) {
 
     }
     that.clickStockClose = function(e) {
-        if (!showStock) return;
+        if (!showStock || !closeBoundary.isWithin(e.layerX, e.layerY)) {
+            return false;
+        }
+        showStock = false;
     }
     return that;
 }
