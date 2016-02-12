@@ -12,7 +12,7 @@ var Player = require('../shared/player.js');
 
 
 var lobby = require('../shared/lobby.js')();
-var chat = require('./chat.js')(lobby, MessageTypes, io);
+var chat = require('./chat.js')(lobby);
 
 app.get('/', function (request, response) {
     fs.readFile(__dirname + '/index.html', function (err, data) {
@@ -46,9 +46,17 @@ http.listen(3000, function(){
 io.on('connection', function(socket){
     console.log('user connected');
 
-    var player = new Player(socket);
+    var player = new Player(lobby.getNewPlayerIndex(), socket);
+    player.onNameChanged = function(name) {
+        socket.broadcast.emit(MessageTypes.PLAYER_NAME_SET + player.getIndex(), name);
+    };
 
-    io.emit(MessageTypes.USER_CONNECTED, 'User connected');
+    socket.on(MessageTypes.PLAYER_NAME_SET, function (playerName) {
+        player.setName(playerName);
+        console.log('name of player with id ' + player.getIndex() + ' to ' + playerName);
+    });
+
+    io.emit(MessageTypes.USER_CONNECTED, player.getIndex());
     socket.on('disconnect', function () {
         console.log('user disconnected');
         chat.removePlayer(player);

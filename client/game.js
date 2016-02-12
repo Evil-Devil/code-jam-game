@@ -127,7 +127,12 @@ var mouse = engine.getMouse();
 
 var socket = io();
 
-var player = new Player(socket);
+var lobby = new Lobby();
+
+var player = new Player(-1, socket);
+player.onNameChanged = function (name) {
+    socket.emit(MessageTypes.PLAYER_NAME_SET, name);
+};
 player.setName("TestUser" + Math.random().toString(36).substring(2, 5));
 
 var market = new Marketplace();
@@ -140,7 +145,7 @@ transport.setPosition(500,500);
 transport.setOwner(player);
 
 var chat = new Chat('chatBox', 'messageField', socket);
-var lobby = new Lobby();
+
 
 var hud = new HUD(chat);
 
@@ -154,9 +159,13 @@ engine.registerListener('click', transport.click);
 
 socket.emit('test', 'some message');
 
-socket.on(MessageTypes.USER_CONNECTED, function () {
-    var player = new Player(socket);
+socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
+    var player = new Player(playerIndex, socket);
     lobby.addPlayer(player);
+
+    socket.on(MessageTypes.PLAYER_NAME_SET + playerIndex, function (name) {
+        player.setName(name);
+    });
 
     console.log('player connected. current players count: ' + lobby.getPlayers().length);
 });

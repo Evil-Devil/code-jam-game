@@ -9,6 +9,10 @@ var Lobby = function() {
         return players;
     };
 
+    that.getNewPlayerIndex = function() {
+        return players.length;
+    };
+
     that.addPlayer = function(player) {
         if (players.indexOf(player) != -1) {
             throw 'player already added';
@@ -16,6 +20,7 @@ var Lobby = function() {
 
         for (var i = 0; i < players.length; i++) {
             player.getSocket().emit(MessageTypes.USER_CONNECTED, i);
+            player.getSocket().emit(MessageTypes.PLAYER_NAME_SET + i, players[i].getName());
         }
 
         players.push(player);
