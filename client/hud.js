@@ -1,16 +1,15 @@
 var HUD = function(engine, chat, lobby) {
     var that = {};
     var currentPlayer = lobby.currentPlayer();
-    var images = [];
+    var images = {};
 
     var borderColor = '#BF8C45';
     var textColor = '#000';
     var moneySign = '\u20AC';
 
     function drawChatWindow(gfx) {
-        gfx.drawOuadOutline(2, 502, 1020, 96, 4, borderColor);
-        gfx.drawQuad(4, 504, 1016, 92, 'rgba(245,185,100,0.5)');
 
+        gfx.drawImage(0, 462, engine.getImage('client/world_chat.png'));
         gfx.fontSize('24px');
         chat.draw(gfx, 5, 517);
     }
@@ -37,12 +36,12 @@ var HUD = function(engine, chat, lobby) {
     }
 
     that.draw = function(gfx) {
+        if (false === engine.preloaded()) return;
         gfx.restore();
         drawChatWindow(gfx);
         drawPlayerInfo(gfx);
         drawOtherPlayersInfo(gfx);
     }
-
 
     return that;
 }

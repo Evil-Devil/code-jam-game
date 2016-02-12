@@ -2,7 +2,7 @@
 // ==================================================
 var engine = new Engine("gameCanvas");
 engine.init();
-
+engine.preloader(['client/world_chat.png']);
 
 var lastFrameTimeMs = 0;
 var maxFPS = 60;
@@ -60,7 +60,6 @@ socket.emit('test', 'some message');
 socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
     var player = new Player(playerIndex, socket);
     lobby.addPlayer(player);
-    lobby.setCurrentPlayer(player);
 
     socket.on(MessageTypes.PLAYER_NAME_SET + playerIndex, function (name) {
         player.setName(name);

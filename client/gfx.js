@@ -8,6 +8,14 @@ var Gfx = function (context) {
         ctx.restore();
     }
 
+    that.store = function() {
+        ctx.store();
+    }
+
+    that.alpha = function(alpha) {
+        ctx.globalAlpha = alpha;
+    }
+
     that.clear = function(width, height) {
         //ctx.fillStyle = '#00FF00';
         ctx.clearRect(0, 0, width, height);
@@ -41,6 +49,9 @@ var Gfx = function (context) {
     that.write = function(x, y, color, text) {
         ctx.fillStyle = color;
         ctx.fillText(text, x, y);
+    }
+    that.drawImage = function(x, y, img) {
+        ctx.drawImage(img, x, y);
     }
 
     return that;

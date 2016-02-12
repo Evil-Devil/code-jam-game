@@ -10,6 +10,11 @@ var Engine = function (id) {
     var eventListener = {
         click: []
     };
+    var preloaded = false;
+    var loadedImages = {
+        images: [],
+        indexNames: {}
+    };
 
     function retrieveCanvas() {
         canvas = document.getElementById(canvasId);
@@ -32,7 +37,7 @@ var Engine = function (id) {
     }
 
 
-    that.registerListener = function(action, callback) {
+    that.registerListener = function (action, callback) {
         if (typeof(eventListener[action]) === 'undefined') {
             throw exception("no event listener for action: " + action);
         }
@@ -59,9 +64,54 @@ var Engine = function (id) {
     that.getMouse = function () {
         return mouse;
     }
-    that.loadImage = function(src) {
+    that.preloaded = function () {
+        return preloaded;
+    }
+    that.preloader = function (imagefiles) {
+        // Initialize variables
+        loadcount = 0;
+        loadtotal = imagefiles.length;
+
+        // Load the images
+        for (var i = 0; i < imagefiles.length; i++) {
+            // Create the image object
+            var image = new Image();
+
+            // Add onload event handler
+            image.onload = function () {
+                loadcount++;
+                if (loadcount == loadtotal) {
+                    // Done loading
+                    preloaded = true;
+                }
+            };
+
+            // Set the source url of the image
+            image.src = imagefiles[i];
+
+            // Save to the image array
+            loadedImages.images[i] = image;
+            loadedImages.indexNames[imagefiles[i]] = i;
+        }
+
+        // Return an array of images
+        return loadedImages;
+    }
+
+    that.getImage = function (name) {
+        if (typeof loadedImages.indexNames[name] === 'undefined') {
+            throw Error('image not found');
+        }
+        return loadedImages.images[loadedImages.indexNames[name]];
+    }
+
+    that.loadImage = function (source, callback) {
         var img = new Image();
-        img.src = src;
+        img.onload = function (callback) {
+            console.log("image " + source + " loaded");
+            callback(true)
+        }
+        img.src = source;
         return img;
     }
 
@@ -73,14 +123,14 @@ var Position = function (x, y) {
     this.x = x || 0;
     this.y = y || 0;
 }
-var Boundary = function(x, y, width, height) {
+var Boundary = function (x, y, width, height) {
     var x1 = x || 0;
     var y1 = y || 0;
     var x2 = x1 + (width || 0);
     var y2 = y1 + (height || 0);
     var that = {};
 
-    that.isWithin =function(x, y) {
+    that.isWithin = function (x, y) {
         if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
             return true;
         }
@@ -124,7 +174,7 @@ var Mouse = function (engine) {
         return lastPosition;
     }
 
-    that.lastClickPosition = function() {
+    that.lastClickPosition = function () {
         return lastClickPosition;
     }
 
