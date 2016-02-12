@@ -1,3 +1,10 @@
-/**
- * Created by bbehrendt on 12.02.2016.
- */
+var Good = function(name) {
+    var that = {};
+    var name = name;
+
+    that.getName = function() {
+        return name;
+    };
+
+    return that;
+}
