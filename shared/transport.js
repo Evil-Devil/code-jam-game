@@ -61,10 +61,9 @@ var Transport = function (id) {
         }
     }
 
-    that.draw = function (gfx) {
-        gfx.fontSize('21px');
-        gfx.drawCircle(that.position.x, that.position.y, 15, '#0000FF');
-        gfx.write(that.position.x - 10.5, that.position.y + 9, '#FFF', "T");
+    that.draw = function (gfx, engine) {
+
+        gfx.drawImageScaled(that.position.x, that.position.y, 80, 80, engine.getImage('karren.png'));
     };
 
     return that;

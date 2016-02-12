@@ -2,7 +2,7 @@
 // ==================================================
 var engine = new Engine("gameCanvas");
 engine.init();
-engine.preloader(['world_chat.png', 'haus.png', 'markt.png', 'wood.png', 'metal.png', 'grain.png', 'wool.png', 'ui_markt.png', 'balkenoben.png']);
+engine.preloader(['world_chat.png', 'haus.png', 'markt.png', 'wood.png', 'metal.png', 'grain.png', 'wool.png', 'ui_markt.png', 'balkenoben.png', 'karren.png']);
 
 
 var gameObjects = new GameObjects();
@@ -163,7 +163,7 @@ function drawGraphics() {
     }
     var transports = gameObjects.getAllTransports();
     for (var i = 0; i < transports.length; i++) {
-        transports[i].draw(gfx);
+        transports[i].draw(gfx, engine);
     }
     chat.draw(gfx);
     hud.draw(gfx);
