@@ -1,21 +1,31 @@
-var Player = function(socket) {
+var Player = function(index, socket) {
 
     var that = {};
     var name;
     var money = 0;
+    var index = index;
+    var socket = socket;
 
-    socket.on(MessageTypes.PLAYER_NAME_SET, function (playerName) {
-        name = playerName;
-        console.log('player name updated');
-    });
+    that.onNameChanged = null;
 
     that.getName = function() {
         return name;
     };
 
+    that.getSocket = function() {
+        return socket;
+    };
+
     that.setName = function(setName) {
-        socket.emit(MessageTypes.PLAYER_NAME_SET, setName);
+        if (that.onNameChanged != undefined) {
+            that.onNameChanged(setName, name);
+        }
+        console.log('name of player ' + index + ' is ' + setName);
         name = setName;
+    };
+
+    that.getIndex = function() {
+        return index;
     };
 
     that.getMoney = function() {
