@@ -60,6 +60,7 @@ socket.emit('test', 'some message');
 socket.on(MessageTypes.USER_CONNECTED, function (playerIndex) {
     var player = new Player(playerIndex, socket);
     lobby.addPlayer(player);
+    lobby.setCurrentPlayer(player);
 
     socket.on(MessageTypes.PLAYER_NAME_SET + playerIndex, function (name) {
         player.setName(name);
@@ -76,6 +77,7 @@ socket.on(MessageTypes.USER_DISCONNECTED, function(playerIndex) {
 
 // draw something ...
 function gameLoop(timestamp) {
+
     // Throttle the frame rate.
     if (timestamp < lastFrameTimeMs + (1000 / maxFPS)) {
         requestAnimationFrame(gameLoop);
