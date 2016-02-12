@@ -4,6 +4,15 @@ var Marketplace = function() {
     var width = 50;
     var height = 50;
     var boundary = new Boundary()
+    var stock = [];
+
+    that.addToStock = function(good) {
+        stock.push(good);
+    }
+
+    that.getStock = function() {
+        return stock;
+    }
 
     that.setPosition = function(x, y) {
         position = new Position(x,y);
@@ -28,7 +37,12 @@ var Marketplace = function() {
         if (!boundary.isWithin(e.layerX, e.layerY)) {
             return false;
         }
-        console.log('clicked marketplace');
+        for (var i= 0;i<that.getStock().length; i++) {
+            console.log(
+                that.getStock()[i].getName() + " " +
+                that.getStock()[i].getPrice() + " EURO"
+            );
+        }
     }
     return that;
 }

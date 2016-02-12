@@ -124,10 +124,10 @@ var Position = function (x, y) {
     this.y = y || 0;
 }
 var Boundary = function (x, y, width, height) {
-    var x1 = x || 0;
-    var y1 = y || 0;
-    var x2 = x1 + (width || 0);
-    var y2 = y1 + (height || 0);
+    var x1 = x - (width / 2 || 0);
+    var y1 = y - (height / 2 || 0);
+    var x2 = x + (width / 2 || 0);
+    var y2 = y + (height / 2 || 0);
     var that = {};
 
     that.isWithin = function (x, y) {
