@@ -1,6 +1,7 @@
 var HUD = function(engine, chat, lobby) {
     var that = {};
     var currentPlayer = lobby.currentPlayer();
+    var images = [];
 
     var borderColor = '#BF8C45';
     var textColor = '#000';
@@ -16,20 +17,22 @@ var HUD = function(engine, chat, lobby) {
     function drawPlayerInfo(gfx) {
         gfx.fontSize('14px');
         gfx.drawOuadOutline(2, 2, 140, 26, 4, borderColor);
-        gfx.write(8, 20, textColor, player.getName());
+        gfx.write(8, 20, textColor, currentPlayer.getName());
         gfx.drawOuadOutline(142, 2, 70, 26, 4, borderColor);
-        gfx.write(148, 20, textColor, player.getMoney() + " " + moneySign);
+        gfx.write(148, 20, textColor, currentPlayer.getMoney() + " " + moneySign);
     }
 
     function drawOtherPlayersInfo(gfx) {
         var players = lobby.getPlayers();
+        if (players.length <= 1)
+            return;
+
         var drawIndex = 0;
         for (var i= 0, il=players.length; i<il; i++) {
             // do not render the actual player!
             if (players[i] == currentPlayer) {
                 continue;
             }
-            console.log('player ' + i + '/' + players[i].getIndex() + ': ' + players[i].getName());
             gfx.drawOuadOutline(402, 2 + (drawIndex * 26), 140, 26, 4, borderColor);
             gfx.write(408, 20 + (drawIndex * 26), textColor, players[i].getName());
 
