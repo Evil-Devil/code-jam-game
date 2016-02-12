@@ -47,7 +47,7 @@ module.exports = function(lobby, io) {
         market.addToStock(new Good('Metal', 6, 100));
         market.addToStock(new Good('Wool', 2, 100));
 
-        /*io.getSocket().on(MessageTypes.MARKET_STOCKLIST, function(msg) {
+        /*io.getSocket().on(MessageTypes.MARKET_STOCK_REQUEST, function(msg) {
             console.log(msg);
         });*/
     }
@@ -86,8 +86,8 @@ module.exports = function(lobby, io) {
         /* ==============================================================================
          *  MARKETPLACE CALLBACK LOGIC
          */
-        player.getSocket().on(MessageTypes.MARKET_STOCKLIST, function(msg) {
-            console.log(msg);
+        player.getSocket().on(MessageTypes.MARKET_STOCK_REQUEST, function(msg) {
+            player.getSocket().emit(MessageTypes.MARKET_STOCK_RESPONSE, market.getStock());
         });
 
         /* ==============================================================================

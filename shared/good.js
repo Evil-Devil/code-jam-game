@@ -1,17 +1,10 @@
 var Good = function(name, price, amount) {
     var that = {};
-    var name = name;
-    var price = price;
-    var amount = amount;
-    var demand = 50; // 0 - 100
 
-    that.getName = function() {
-        return name;
-    };
-
-    that.getPrice = function() {
-        return price;
-    }
+    that.name = name;
+    that.price = price;
+    that.amount = amount;
+    that.demand = 50; // 0 - 100
 
     return that;
 }

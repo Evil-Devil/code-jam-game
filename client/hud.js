@@ -1,6 +1,7 @@
-var HUD = function(engine, chat, lobby) {
+var HUD = function(engine, chat, lobby, market) {
     var that = {};
     var currentPlayer = lobby.currentPlayer();
+    var market = market;
     var images = {};
 
     var borderColor = '#BF8C45';
@@ -39,12 +40,17 @@ var HUD = function(engine, chat, lobby) {
         }
     }
 
+
     that.draw = function(gfx) {
         if (false === engine.preloaded()) return;
         gfx.restore();
+        market.draw(gfx, engine);
+
         drawChatWindow(gfx);
         drawPlayerInfo(gfx);
         drawOtherPlayersInfo(gfx);
+
+
     }
 
     return that;

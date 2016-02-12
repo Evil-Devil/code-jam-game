@@ -6,6 +6,7 @@ var Marketplace = function(player) {
     var height = 150;
     var boundary = new Boundary()
     var stock = [];
+    showStock = false;
 
     that.addToStock = function(good) {
         stock.push(good);
@@ -30,6 +31,17 @@ var Marketplace = function(player) {
 
     that.draw = function(gfx, engine) {
         gfx.drawImageScaled(boundary.getLeft(), boundary.getTop(), boundary.getWidth(), boundary.getHeight(), engine.getImage('client/markt.png'));
+        if (showStock) {
+            that.drawStock(gfx);
+        }
+    }
+    that.drawStock = function(gfx) {
+        gfx.fontSize('18px');
+
+        for (var i= 0;i<that.getStock().length; i++) {
+            var msg = that.getStock()[i].name + " " + that.getStock()[i].price + " EURO";
+            gfx.write(position.x, position.y + (i*20), '#00ff00', msg);
+        }
     }
     that.click = function(e) {
 
@@ -38,17 +50,11 @@ var Marketplace = function(player) {
         }
 
         // call server for list :)
-        player.getSocket().emit(MessageTypes.MARKET_STOCKLIST, player.getName() + " requested stocklist");
-        console.log('requesting stock ...');
-
-
-
-        for (var i= 0;i<that.getStock().length; i++) {
-            console.log(
-                that.getStock()[i].getName() + " " +
-                that.getStock()[i].getPrice() + " EURO"
-            );
-        }
+        player.getSocket().emit(MessageTypes.MARKET_STOCK_REQUEST, player.getName() + " requested stocklist");
+        player.getSocket().on(MessageTypes.MARKET_STOCK_RESPONSE, function(stocklist) {
+            stock = stocklist;
+            showStock = true;
+        })
     }
     return that;
 }

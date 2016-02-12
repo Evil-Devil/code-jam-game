@@ -8,7 +8,8 @@ var MessageTypes = {
     DESTROY_WORKSHOP: 'destroy workshop',
     CREATE_TRANSPORT: 'create transport',
     MOVE_TRANSPORT: 'move transport',
-    MARKET_STOCKLIST: 'list marketstock'
+    MARKET_STOCK_REQUEST: 'request marketstock',
+    MARKET_STOCK_RESPONSE: 'response marketstock'
 };
 
 module.exports = MessageTypes;

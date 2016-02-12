@@ -35,7 +35,7 @@ var allWorkshops = [];
 var allTransports = [];
 
 var chat = new Chat('chatBox', 'messageField', socket);
-var hud = new HUD(engine, chat, lobby);
+var hud = new HUD(engine, chat, lobby, market);
 
 var nameForm = document.getElementById('nameForm');
 nameForm.onsubmit = function () {
