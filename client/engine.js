@@ -67,7 +67,22 @@ var Engine = function (id) {
 var Position = function (x, y) {
     this.x = x || 0;
     this.y = y || 0;
+}
+var Boundary = function(x, y, width, height) {
+    var x1 = x || 0;
+    var y1 = y || 0;
+    var x2 = x1 + (width || 0);
+    var y2 = y1 + (height || 0);
+    var that = {};
 
+    that.isWithin =function(x, y) {
+        console.log(x1, x2, y1, y2);
+        if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+            return true;
+        }
+        return false;
+    }
+    return that;
 }
 
 var Mouse = function (engine) {

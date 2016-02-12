@@ -13,28 +13,31 @@ var Good = function(name) {
 var Marketplace = function() {
     var that = {};
     var position = new Position();
+    var width = 50;
+    var height = 50;
+    var boundary = new Boundary()
 
     that.setPosition = function(x, y) {
-        //position.x = x;
-        //position.y = y;
-
-        that.position = new Position(x,y);
+        position = new Position(x,y);
     }
-
     that.buy = function () {
         console.log("you bought goods");
-    };
-
+    }
     that.sell = function() {
         console.log("you sold goods");
-    };
-
+    }
     that.draw = function(gfx) {
         gfx.fontSize('32px');
         gfx.drawCircle(100, 100, 25, '#FF0000');
         gfx.write(86, 110, '#000', "M");
     }
+    that.click = function(e) {
 
+        if (!boundary.isWithin(e.layerX, e.layerY)) {
+            return false;
+        }
+        console.log('clicked marketplace');
+    }
     return that;
 }
 
@@ -151,6 +154,7 @@ var lastFrameTimeMs = 0,
 
 // register objects for events
 engine.registerListener('click', transport.click);
+engine.registerListener('click', market.click);
 
 socket.emit('test', 'some message');
 
