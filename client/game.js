@@ -142,7 +142,7 @@ transport.setOwner(player);
 var chat = new Chat('chatBox', 'messageField', socket);
 var lobby = new Lobby();
 
-var hud = new HUD(chat);
+var hud = new HUD(chat, player);
 
 var lastFrameTimeMs = 0,
     maxFPS = 60,
